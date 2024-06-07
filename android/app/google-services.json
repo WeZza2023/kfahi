@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491829647993",
+    "project_id": "kfahi-4e98a",
+    "storage_bucket": "kfahi-4e98a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491829647993:android:8840be630c594d109752a8",
+        "android_client_info": {
+          "package_name": "com.example.kfahi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIwUAo3EP7IB4xhm2ppKwXOD6ZaDoEpL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

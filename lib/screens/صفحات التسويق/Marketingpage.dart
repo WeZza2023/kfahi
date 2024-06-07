@@ -1,0 +1,210 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'seo/seo.dart';
+import 'Customer service/Customerservicepage.dart';
+import 'E-Marketing/EMarketingpage.dart';
+import 'ContentWritin/ContentWritin.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: Marketingpage(),
+    );
+  }
+}
+
+class Marketingpage extends StatefulWidget {
+  const Marketingpage({super.key});
+
+  @override
+  _MarketingpageState createState() => _MarketingpageState();
+}
+
+class _MarketingpageState extends State<Marketingpage> {
+  late PageController _pageController;
+  int _currentPageIndex = 0;
+  late GlobalKey<ScaffoldState> _scaffoldKey;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _scaffoldKey = GlobalKey<ScaffoldState>();
+
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (mounted) {
+        setState(() {
+          _currentPageIndex =
+              (_currentPageIndex + 1) % 4; // تم تعديلها لتشمل 4 صور
+          _pageController.animateToPage(
+            _currentPageIndex,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              // إضافة الأكواد التي تقوم بفتح القائمة المنسدلة هنا
+            },
+          ),
+        ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(); // العودة للصفحة السابقة
+          },
+        ),
+        centerTitle: true,
+        title:
+            const Text('دورات التسويق', style: TextStyle(color: Colors.white)),
+      ),
+      backgroundColor: Colors.black, // تحديد لون خلفية الصفحة
+      body: Column(
+        children: [
+          SizedBox(
+            height: screenHeight / 2,
+            child: PageView.builder(
+              controller: _pageController,
+              scrollDirection: Axis.horizontal,
+              itemCount: 4, // تحديد عدد الصور
+              itemBuilder: (context, index) {
+                return Image.asset(
+                  index == 0
+                      ? 'lib/assets/images/seo.png'
+                      : (index == 1
+                          ? 'lib/assets/images/E-Marketing.png'
+                          : (index == 2
+                              ? 'lib/assets/images/Customerservice.png'
+                              : 'lib/assets/images/ContentWriting.png')),
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 60.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: _buildButton(
+                  'seo',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const seo(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: _buildButton(
+                  'E-Marketing',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EMarketingpage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 60.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: _buildButton(
+                  'Customer service',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Customerservicepage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: _buildButton(
+                  'Content Writing',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ContentWritin(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton(String text, {VoidCallback? onPressed}) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: Center(
+              child: Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.black, // لون النص
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
