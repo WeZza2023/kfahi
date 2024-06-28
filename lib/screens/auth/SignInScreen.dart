@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/firstpage.dart';
 import 'Signup.dart';
@@ -41,6 +43,46 @@ class _SignInScreenState extends State<SignInScreen>
         passwordController.text.isNotEmpty;
   }
 
+  Future<void> signInWithEmailPassword() async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: usernameController.text,
+              password: passwordController.text);
+
+      // Check if the user's account is active
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      if (userDoc.exists && userDoc['active'] == true) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FirstPage(),
+          ),
+          (route) => false,
+        );
+      } else {
+        // User account is not active
+        // Sign out the user
+        await FirebaseAuth.instance.signOut();
+        // Show a message to the user
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+          'Your account is not active. Please contact the admin.',
+        )));
+        print('Your account is not active. Please contact the admin.');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,10 +111,10 @@ class _SignInScreenState extends State<SignInScreen>
       ),
       body: SingleChildScrollView(
         child: Container(
-          width: double.infinity, // Fill the width of the screen
-          height: MediaQuery.of(context)
-              .size
-              .height, // Fill the height of the screen
+          width: double.infinity,
+          // Fill the width of the screen
+          height: MediaQuery.of(context).size.height,
+          // Fill the height of the screen
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(20),
@@ -112,18 +154,11 @@ class _SignInScreenState extends State<SignInScreen>
               ElevatedButton(
                 onPressed: isAllFieldsFilled()
                     ? () {
-                        // Navigate to FirstPage without opening a new page
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FirstPage(),
-                          ),
-                        );
+                        signInWithEmailPassword();
                       }
                     : null,
                 style: ButtonStyle(
-                  backgroundColor:
-                  WidgetStateProperty.all<Color>(Colors.grey),
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.grey),
                 ), // Disable button if not all fields are filled
                 child: const Text(
                   'تسجيل الدخول',
@@ -144,8 +179,7 @@ class _SignInScreenState extends State<SignInScreen>
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all<Color>(Colors.blue),
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
                 ),
                 child: const Text(
                   'تسجيل حساب',
@@ -188,12 +222,15 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyboardType,
         obscureText: obscureText,
         controller: controller,
-        style: const TextStyle(color: Colors.white), // لون النص المدخل أبيض
+        style: const TextStyle(color: Colors.white),
+        // لون النص المدخل أبيض
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white), // لون النص الأبيض
+          labelStyle: const TextStyle(color: Colors.white),
+          // لون النص الأبيض
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.white), // لون النص الأبيض
+          hintStyle: const TextStyle(color: Colors.white),
+          // لون النص الأبيض
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

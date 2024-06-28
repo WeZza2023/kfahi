@@ -58,7 +58,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
         password: passwordController.text,
       );
       final user = <String, dynamic>{
-        // "uid": FirebaseAuth.instance.currentUser!.uid,
+        "uid": FirebaseAuth.instance.currentUser!.uid,
         "active": false,
         "first": nameController.text,
       };
@@ -69,11 +69,12 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
           .set(user);
 
       // Navigate to RegistrationConfirmationPage after successful registration
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => const RegistrationConfirmationPage(),
         ),
+        (route) => false,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

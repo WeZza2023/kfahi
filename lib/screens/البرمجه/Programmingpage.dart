@@ -1,17 +1,19 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/Ethicalhacking/Ethicalhackingpage.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage1.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage1.dart';
+import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/Ethicalhacking/lecs_page.dart';
 
 import '../coursepages.dart';
 
 void main() {
-  runApp(const ProgrammingPage());
+  runApp(ProgrammingPage());
 }
 
 class ProgrammingPage extends StatefulWidget {
-  const ProgrammingPage({super.key});
+  ProgrammingPage({super.key});
 
   @override
   _ProgrammingPageState createState() => _ProgrammingPageState();
@@ -111,7 +113,7 @@ class _ProgrammingPageState extends State<ProgrammingPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const WordPressDeveloperPage1(),
+                        builder: (context) => EthicalhackingLecsPage(),
                       ),
                     );
                   },
@@ -157,7 +159,7 @@ class _ProgrammingPageState extends State<ProgrammingPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Ethicalhackingpage(),
+                        builder: (context) => EthicalhackingLecsPage(),
                       ),
                     );
                   },

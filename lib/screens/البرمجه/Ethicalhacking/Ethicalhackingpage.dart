@@ -1,9 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'Ethicalhackingpagetest1.dart';
+import '../../../constants.dart';
+import 'Ethicalhackingpagetest.dart';
 
 class Ethicalhackingpage extends StatefulWidget {
-  const Ethicalhackingpage({super.key});
+  Ethicalhackingpage(
+      {super.key, required this.videoId, required this.videoNum});
+
+  final String videoId;
+  final int videoNum;
 
   @override
   _EthicalhackingpageState createState() => _EthicalhackingpageState();
@@ -18,7 +25,7 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
     super.initState();
 
     _youtubeController = YoutubePlayerController(
-      initialVideoId: '01heBtXmSIw', // تحديث معرف الفيديو الجديد هنا
+      initialVideoId: widget.videoId, // تحديث معرف الفيديو الجديد هنا
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -38,22 +45,64 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        // انتهى الفيديو، قم بالانتقال تلقائيًا إلى صفحة Ethicalhackingpagetest1
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Ethicalhackingpagetest1(),
-          ),
-        );
+        getUploadDoneLecs();
+        _playNextVid();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
+  void _playNextVid() {
+    if (widget.videoNum < EthicalHackingVids.length - 1) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Ethicalhackingpage(
+              videoNum: widget.videoNum + 1,
+              videoId: EthicalHackingVids[widget.videoNum + 1],
+            ),
+          ));
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> getUploadDoneLecs() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("Ethicalhacking");
+
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (!doneLecs.contains(widget.videoNum)) {
+        doneLecs.add(widget.videoNum);
+        await docRef.update({
+          'DoneLecs': doneLecs,
+        });
+      }
+    } else {
+      await docRef.set({
+        'DoneLecs': [widget.videoNum],
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المحاضرة الأولى'),
+        title: Text('${widget.videoNum + 1} المحاضرة '),
       ),
       body: Column(
         children: [
@@ -78,18 +127,4 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _youtubeController.dispose();
-    super.dispose();
-  }
-}
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Ethicalhackingpage(),
-    ),
-  );
 }

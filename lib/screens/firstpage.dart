@@ -75,12 +75,6 @@ class _FirstPageState extends State<FirstPage> {
             },
           ),
         ],
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         centerTitle: true,
         title: const Text(
           'الصفحة الرئيسية',

@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'Ethicalhackingpage8.dart';
-import 'Ethicalhackingpage9.dart';
+import 'Ethicalhackingpage.dart';
 
-class Ethicalhackingpagetest8 extends StatefulWidget {
-  const Ethicalhackingpagetest8({super.key});
+class Ethicalhackingpagetest1 extends StatefulWidget {
+  const Ethicalhackingpagetest1({super.key});
 
   @override
-  _Ethicalhackingpagetest8State createState() =>
-      _Ethicalhackingpagetest8State();
+  _Ethicalhackingpagetest1State createState() =>
+      _Ethicalhackingpagetest1State();
 }
 
-class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
+class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
   int _currentQuestionIndex = 0;
   int _correctAnswersCount = 0;
   int _remainingTimeInSeconds = 60; // مدة السؤال بالثواني
@@ -104,10 +103,16 @@ class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
           context, MaterialPageRoute(builder: (context) => const NewPage()));
     } else {
       resultMessage =
-          'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
+      'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
       // انتقل إلى صفحة المحاضرة بعد رسوب المستخدم
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const Ethicalhackingpage8()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Ethicalhackingpage(
+                    videoId: '',
+                    videoNum: 0,
+                  )));
     }
 
     // عرض رسالة النتيجة
@@ -134,7 +139,7 @@ class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
     return Scaffold(
       backgroundColor: Colors.black, // خلفية الصفحة
       appBar: AppBar(
-        title: const Text('اختبار المحاضره 8'),
+        title: const Text('اختبار المحاضره 1'),
       ),
       body: Center(
         child: Column(
@@ -157,7 +162,7 @@ class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
               ),
             const SizedBox(height: 20),
             if (_remainingTimeInSeconds > 0)
-              // وقت السؤال
+            // وقت السؤال
               Text(
                 'الوقت المتبقي: $_remainingTimeInSeconds ثانية',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -166,11 +171,11 @@ class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
             if (_remainingTimeInSeconds > 0 &&
                 _questions.isNotEmpty &&
                 _currentQuestionIndex < _questions.length)
-              // الخيارات
+            // الخيارات
               Column(
                 children: List.generate(
                   _questions[_currentQuestionIndex]['options'].length,
-                  (index) {
+                      (index) {
                     return ElevatedButton(
                       onPressed: () {
                         _checkAnswer(index);
@@ -191,7 +196,7 @@ class _Ethicalhackingpagetest8State extends State<Ethicalhackingpagetest8> {
 
   void _checkAnswer(int selectedOptionIndex) {
     int correctOptionIndex =
-        _questions[_currentQuestionIndex]['correctOptionIndex'];
+    _questions[_currentQuestionIndex]['correctOptionIndex'];
 
     if (selectedOptionIndex == correctOptionIndex) {
       _correctAnswersCount++;
@@ -234,10 +239,7 @@ class NewPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // انتقل إلى الصفحة الجديدة
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Ethicalhackingpage9()));
+
               },
               child: const Text('الانتقال للدرس التالي'),
             ),

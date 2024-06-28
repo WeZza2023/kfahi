@@ -56,7 +56,7 @@ class CoursePages extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProgrammingPage(),
+                          builder: (context) => ProgrammingPage(),
                         ),
                       );
                     },
@@ -154,7 +154,8 @@ class RectangleButton extends StatelessWidget {
   final String imagePath;
   final VoidCallback onPressed;
 
-  const RectangleButton({super.key, 
+  const RectangleButton({
+    super.key,
     required this.color,
     required this.label,
     required this.imagePath,
