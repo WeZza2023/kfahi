@@ -3,15 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage.dart';
 import '../../../constants/lectures.dart';
+import 'Leadershippage.dart';
 
-class FlutterLecsPage extends StatefulWidget {
-  FlutterLecsPage({super.key});
+class LeadershipLecsPage extends StatefulWidget {
+  LeadershipLecsPage({super.key});
 
   @override
-  State<FlutterLecsPage> createState() => _FlutterLecsPageState();
+  State<LeadershipLecsPage> createState() => _LeadershipLecsPageState();
 }
 
-class _FlutterLecsPageState extends State<FlutterLecsPage> {
+class _LeadershipLecsPageState extends State<LeadershipLecsPage> {
   late List<int> doneLecs = [];
 
   @override
@@ -32,7 +33,7 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
         .collection('users')
         .doc(userUid)
         .collection("courses")
-        .doc("Flutter");
+        .doc("Leadership");
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
@@ -75,8 +76,8 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return FlutterPage(
-                            videoId: FlutterVids[index],
+                          return Leadershippage(
+                            videoId: LeaderShipVids[index],
                             videoNum: index,
                           );
                         },
@@ -99,7 +100,7 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
                   ),
                 ),
                 padding: EdgeInsets.all(15),
-                itemCount: FlutterVids.length,
+                itemCount: LeaderShipVids.length,
               ),
             )
           ],

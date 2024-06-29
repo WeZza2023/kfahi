@@ -3,19 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../constants/lectures.dart';
-import 'hrpagetest.dart';
+import 'WordPressDeveloperPageexam.dart';
 
-class Hrpage extends StatefulWidget {
-  Hrpage({super.key, required this.videoId, required this.videoNum});
+class Wordpressdeveloperpage extends StatefulWidget {
+  Wordpressdeveloperpage(
+      {super.key, required this.videoId, required this.videoNum});
 
   final String videoId;
   final int videoNum;
 
   @override
-  _HrpageState createState() => _HrpageState();
+  _WordpressdeveloperpageState createState() => _WordpressdeveloperpageState();
 }
 
-class _HrpageState extends State<Hrpage> {
+class _WordpressdeveloperpageState extends State<Wordpressdeveloperpage> {
   late YoutubePlayerController _youtubeController;
   int _currentTime = 0;
 
@@ -57,13 +58,13 @@ class _HrpageState extends State<Hrpage> {
   }
 
   void _playNextVid() {
-    if (widget.videoNum < HrVids.length - 1) {
+    if (widget.videoNum < WordPrsVids.length - 1) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Hrpage(
+            builder: (context) => Wordpressdeveloperpage(
               videoNum: widget.videoNum + 1,
-              videoId: HrVids[widget.videoNum + 1],
+              videoId: WordPrsVids[widget.videoNum + 1],
             ),
           ));
     } else {
@@ -74,15 +75,20 @@ class _HrpageState extends State<Hrpage> {
   Future<void> isText() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final docRef =
-        db.collection('users').doc(userUid).collection("courses").doc("HR");
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("WordPress");
 
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == HrVids.length) {
+      if (doneLecs.length == WordPrsVids.length) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Hrpagetest()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Wordpressdeveloperpageexam()));
       } else {
         _playNextVid();
       }
@@ -92,8 +98,11 @@ class _HrpageState extends State<Hrpage> {
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final docRef =
-        db.collection('users').doc(userUid).collection("courses").doc("HR");
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("WordPress");
 
     final snapshot = await docRef.get();
 

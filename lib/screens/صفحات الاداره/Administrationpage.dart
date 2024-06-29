@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/coursepages.dart';
-import 'Business administration/Businessadministration.dart';
+import 'Business administration/lecs_page.dart';
 import 'HR/hrpage.dart';
+import 'HR/lecs_page.dart';
 import 'Leadership/Leadershippage.dart';
+import 'Leadership/lecs_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -120,7 +122,7 @@ class _AdministrationpageState extends State<Administrationpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Businessadministration(),
+                        builder: (context) => BusinessLecsPage(),
                       ),
                     );
                   },
@@ -133,7 +135,7 @@ class _AdministrationpageState extends State<Administrationpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Leadershippage(),
+                        builder: (context) => LeadershipLecsPage(),
                       ),
                     );
                   },
@@ -166,7 +168,7 @@ class _AdministrationpageState extends State<Administrationpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const hrpage(),
+                        builder: (context) => HrLecsPage(),
                       ),
                     );
                   },

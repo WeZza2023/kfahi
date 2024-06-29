@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage.dart';
 import '../../../constants/lectures.dart';
+import 'hrpage.dart';
 
-class FlutterLecsPage extends StatefulWidget {
-  FlutterLecsPage({super.key});
+class HrLecsPage extends StatefulWidget {
+  HrLecsPage({super.key});
 
   @override
-  State<FlutterLecsPage> createState() => _FlutterLecsPageState();
+  State<HrLecsPage> createState() => _HrLecsPageState();
 }
 
-class _FlutterLecsPageState extends State<FlutterLecsPage> {
+class _HrLecsPageState extends State<HrLecsPage> {
   late List<int> doneLecs = [];
 
   @override
@@ -28,11 +28,8 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
   Future<void> getDoneLecs() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final docRef = db
-        .collection('users')
-        .doc(userUid)
-        .collection("courses")
-        .doc("Flutter");
+    final docRef =
+        db.collection('users').doc(userUid).collection("courses").doc("HR");
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
@@ -75,8 +72,8 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return FlutterPage(
-                            videoId: FlutterVids[index],
+                          return Hrpage(
+                            videoId: HrVids[index],
                             videoNum: index,
                           );
                         },
@@ -99,7 +96,7 @@ class _FlutterLecsPageState extends State<FlutterLecsPage> {
                   ),
                 ),
                 padding: EdgeInsets.all(15),
-                itemCount: FlutterVids.length,
+                itemCount: HrVids.length,
               ),
             )
           ],

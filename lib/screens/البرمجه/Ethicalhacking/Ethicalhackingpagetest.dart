@@ -17,7 +17,7 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
   int _remainingTimeInSeconds = 60; // مدة السؤال بالثواني
 
   late Timer _timer;
-  late List <Map<String, dynamic>> _selectedQuestions;
+  late List<Map<String, dynamic>> _selectedQuestions;
 
   @override
   void initState() {
@@ -26,11 +26,10 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
     _startNextQuestion();
   }
 
-  List <Map<String, dynamic>> _getRandomQuestions(int count) {
+  List<Map<String, dynamic>> _getRandomQuestions(int count) {
     final random = Random();
-    final shuffledQuestions = List<Map<String, dynamic>>.from(
-        EthicalHackingQues)
-      ..shuffle(random);
+    final shuffledQuestions =
+        List<Map<String, dynamic>>.from(EthicalHackingQues)..shuffle(random);
     return shuffledQuestions.take(count).toList();
   }
 
@@ -71,7 +70,7 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
       print("مبروك لقد اجتزت الاختبار");
     } else {
       resultMessage =
-      'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
+          'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
       // انتقل إلى صفحة المحاضرة بعد رسوب المستخدم
       Navigator.pop(context);
       print(
@@ -102,7 +101,7 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
     return Scaffold(
       backgroundColor: Colors.black, // خلفية الصفحة
       appBar: AppBar(
-        title: const Text('اختبار المحاضره 1'),
+        title: const Text('اختبار Ethical Hacking'),
       ),
       body: Center(
         child: Column(
@@ -125,7 +124,7 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
               ),
             const SizedBox(height: 20),
             if (_remainingTimeInSeconds > 0)
-            // وقت السؤال
+              // وقت السؤال
               Text(
                 'الوقت المتبقي: $_remainingTimeInSeconds ثانية',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -134,18 +133,18 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
             if (_remainingTimeInSeconds > 0 &&
                 _selectedQuestions.isNotEmpty &&
                 _currentQuestionIndex < _selectedQuestions.length)
-            // الخيارات
+              // الخيارات
               Column(
                 children: List.generate(
                   _selectedQuestions[_currentQuestionIndex]['options'].length,
-                      (index) {
+                  (index) {
                     return ElevatedButton(
                       onPressed: () {
                         _checkAnswer(index);
                       },
                       child: Text(
                         _selectedQuestions[_currentQuestionIndex]['options']
-                        [index],
+                            [index],
                         style: const TextStyle(fontSize: 20),
                       ),
                     );
@@ -160,7 +159,7 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
 
   void _checkAnswer(int selectedOptionIndex) {
     int correctOptionIndex =
-    _selectedQuestions[_currentQuestionIndex]['correctOptionIndex'];
+        _selectedQuestions[_currentQuestionIndex]['correctOptionIndex'];
 
     if (selectedOptionIndex == correctOptionIndex) {
       _correctAnswersCount++;
@@ -175,40 +174,3 @@ class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
     super.dispose();
   }
 }
-
-// class NewPage extends StatelessWidget {
-//   const NewPage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       appBar: AppBar(
-//         title: const Text('صفحة جديدة'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             const Text(
-//               'مبروك، لقد اجتزت الاختبار ووصلت إلى الصفحة الجديدة!',
-//               style: TextStyle(
-//                 fontSize: 24,
-//                 color: Colors.white,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//               textAlign: TextAlign.center,
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // انتقل إلى الصفحة الجديدة
-//               },
-//               child: const Text('الانتقال للدرس التالي'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

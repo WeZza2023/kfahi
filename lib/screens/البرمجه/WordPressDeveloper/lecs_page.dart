@@ -1,119 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage1.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage2.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage22.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage3.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage49.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage50.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage51.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage52.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage53.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage54.dart';
+import '../../../constants/lectures.dart';
+import 'WordPressDeveloperPage.dart';
 
-import 'WordPressDeveloperPage10.dart';
-import 'WordPressDeveloperPage11.dart';
-import 'WordPressDeveloperPage12.dart';
-import 'WordPressDeveloperPage13.dart';
-import 'WordPressDeveloperPage14.dart';
-import 'WordPressDeveloperPage15.dart';
-import 'WordPressDeveloperPage16.dart';
-import 'WordPressDeveloperPage17.dart';
-import 'WordPressDeveloperPage18.dart';
-import 'WordPressDeveloperPage19.dart';
-import 'WordPressDeveloperPage20.dart';
-import 'WordPressDeveloperPage21.dart';
-import 'WordPressDeveloperPage23.dart';
-import 'WordPressDeveloperPage24.dart';
-import 'WordPressDeveloperPage25.dart';
-import 'WordPressDeveloperPage26.dart';
-import 'WordPressDeveloperPage27.dart';
-import 'WordPressDeveloperPage28.dart';
-import 'WordPressDeveloperPage29.dart';
-import 'WordPressDeveloperPage30.dart';
-import 'WordPressDeveloperPage31.dart';
-import 'WordPressDeveloperPage32.dart';
-import 'WordPressDeveloperPage33.dart';
-import 'WordPressDeveloperPage34.dart';
-import 'WordPressDeveloperPage35.dart';
-import 'WordPressDeveloperPage36.dart';
-import 'WordPressDeveloperPage37.dart';
-import 'WordPressDeveloperPage38.dart';
-import 'WordPressDeveloperPage39.dart';
-import 'WordPressDeveloperPage4.dart';
-import 'WordPressDeveloperPage40.dart';
-import 'WordPressDeveloperPage41.dart';
-import 'WordPressDeveloperPage42.dart';
-import 'WordPressDeveloperPage43.dart';
-import 'WordPressDeveloperPage44.dart';
-import 'WordPressDeveloperPage45.dart';
-import 'WordPressDeveloperPage46.dart';
-import 'WordPressDeveloperPage47.dart';
-import 'WordPressDeveloperPage48.dart';
-import 'WordPressDeveloperPage5.dart';
-import 'WordPressDeveloperPage6.dart';
-import 'WordPressDeveloperPage7.dart';
-import 'WordPressDeveloperPage8.dart';
-import 'WordPressDeveloperPage9.dart';
+class WordPrsLecsPage extends StatefulWidget {
+  WordPrsLecsPage({super.key});
 
-class EthicalhackingLecsPage extends StatelessWidget {
-  EthicalhackingLecsPage({super.key});
+  @override
+  State<WordPrsLecsPage> createState() => _WordPrsLecsPageState();
+}
 
-  final List lectures = [
-    WordPressDeveloperPage1(),
-    WordPressDeveloperPage2(),
-    WordPressDeveloperPage3(),
-    WordPressDeveloperPage4(),
-    WordPressDeveloperPage5(),
-    WordPressDeveloperPage6(),
-    WordPressDeveloperPage7(),
-    WordPressDeveloperPage8(),
-    WordPressDeveloperPage9(),
-    WordPressDeveloperPage10(),
-    WordPressDeveloperPage11(),
-    WordPressDeveloperPage12(),
-    WordPressDeveloperPage13(),
-    WordPressDeveloperPage14(),
-    WordPressDeveloperPage15(),
-    WordPressDeveloperPage16(),
-    WordPressDeveloperPage17(),
-    WordPressDeveloperPage18(),
-    WordPressDeveloperPage19(),
-    WordPressDeveloperPage20(),
-    WordPressDeveloperPage21(),
-    WordPressDeveloperPage22(),
-    WordPressDeveloperPage23(),
-    WordPressDeveloperPage24(),
-    WordPressDeveloperPage25(),
-    WordPressDeveloperPage26(),
-    WordPressDeveloperPage27(),
-    WordPressDeveloperPage28(),
-    WordPressDeveloperPage29(),
-    WordPressDeveloperPage30(),
-    WordPressDeveloperPage31(),
-    WordPressDeveloperPage32(),
-    WordPressDeveloperPage33(),
-    WordPressDeveloperPage34(),
-    WordPressDeveloperPage35(),
-    WordPressDeveloperPage36(),
-    WordPressDeveloperPage37(),
-    WordPressDeveloperPage38(),
-    WordPressDeveloperPage39(),
-    WordPressDeveloperPage40(),
-    WordPressDeveloperPage41(),
-    WordPressDeveloperPage42(),
-    WordPressDeveloperPage43(),
-    WordPressDeveloperPage44(),
-    WordPressDeveloperPage45(),
-    WordPressDeveloperPage46(),
-    WordPressDeveloperPage47(),
-    WordPressDeveloperPage48(),
-    WordPressDeveloperPage49(),
-    WordPressDeveloperPage50(),
-    WordPressDeveloperPage51(),
-    WordPressDeveloperPage52(),
-    WordPressDeveloperPage53(),
-    WordPressDeveloperPage54(),
-  ];
+class _WordPrsLecsPageState extends State<WordPrsLecsPage> {
+  late List<int> doneLecs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getDoneLecs();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> getDoneLecs() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("WordPressDeveloper");
+    final snapshot = await docRef.get();
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      setState(() {
+        this.doneLecs = doneLecs.cast<int>();
+      });
+    } else {
+      await docRef.set({'DoneLecs': []});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +75,10 @@ class EthicalhackingLecsPage extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return lectures[index];
+                          return Wordpressdeveloperpage(
+                            videoId: WordPrsVids[index],
+                            videoNum: index,
+                          );
                         },
                       ));
                     },
@@ -154,7 +86,9 @@ class EthicalhackingLecsPage extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.green,
+                        color: doneLecs.contains(index) == true
+                            ? Colors.green
+                            : Colors.blueGrey,
                       ),
                       child: Center(
                           child: Text(
@@ -165,7 +99,7 @@ class EthicalhackingLecsPage extends StatelessWidget {
                   ),
                 ),
                 padding: EdgeInsets.all(15),
-                itemCount: lectures.length,
+                itemCount: WordPrsVids.length,
               ),
             )
           ],

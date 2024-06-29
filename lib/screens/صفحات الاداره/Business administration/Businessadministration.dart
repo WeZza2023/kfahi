@@ -1,15 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'Businessadministrationtest1.dart';
+import '../../../constants/lectures.dart';
+import 'Businessadministrationtest.dart';
 
-class Businessadministration extends StatefulWidget {
-  const Businessadministration({super.key});
+class BusinessadministrationPage extends StatefulWidget {
+  BusinessadministrationPage(
+      {super.key, required this.videoId, required this.videoNum});
+
+  final String videoId;
+  final int videoNum;
 
   @override
-  _BusinessadministrationState createState() => _BusinessadministrationState();
+  _BusinessadministrationPageState createState() =>
+      _BusinessadministrationPageState();
 }
 
-class _BusinessadministrationState extends State<Businessadministration> {
+class _BusinessadministrationPageState
+    extends State<BusinessadministrationPage> {
   late YoutubePlayerController _youtubeController;
   int _currentTime = 0;
 
@@ -18,7 +27,7 @@ class _BusinessadministrationState extends State<Businessadministration> {
     super.initState();
 
     _youtubeController = YoutubePlayerController(
-      initialVideoId: 'E_kq3tifWb0', // Update the video ID here
+      initialVideoId: widget.videoId, // تحديث معرف الفيديو الجديد هنا
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -38,26 +47,91 @@ class _BusinessadministrationState extends State<Businessadministration> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        // Video ended, automatically navigate to WordPressDeveloperPageexam1
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Businessadministrationtest1(),
-          ),
-        );
+        getUploadDoneLecs();
+        isText();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
+  void _playNextVid() {
+    if (widget.videoNum < BussinessVids.length - 1) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BusinessadministrationPage(
+              videoNum: widget.videoNum + 1,
+              videoId: BussinessVids[widget.videoNum + 1],
+            ),
+          ));
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> isText() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("Business");
+
+    final snapshot = await docRef.get();
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (doneLecs.length == BussinessVids.length) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Businessadministrationtest()));
+      } else {
+        _playNextVid();
+      }
+    }
+  }
+
+  Future<void> getUploadDoneLecs() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("Business");
+
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (!doneLecs.contains(widget.videoNum)) {
+        doneLecs.add(widget.videoNum);
+        await docRef.update({
+          'DoneLecs': doneLecs,
+        });
+      }
+    } else {
+      await docRef.set({
+        'DoneLecs': [widget.videoNum],
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المحاضره الاولي'),
+        title: Text('${widget.videoNum + 1} المحاضرة '),
       ),
       body: Column(
         children: [
-          // Top section: Video display
+          // القسم العلوي: عرض الفيديو
           Expanded(
             child: YoutubePlayer(
               controller: _youtubeController,
@@ -65,7 +139,7 @@ class _BusinessadministrationState extends State<Businessadministration> {
               progressIndicatorColor: Colors.blueAccent,
             ),
           ),
-          // Bottom section: Time bar
+          // القسم السفلي: شريط الوقت
           Container(
             padding: const EdgeInsets.all(16.0),
             color: Colors.blueGrey,
@@ -78,18 +152,4 @@ class _BusinessadministrationState extends State<Businessadministration> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _youtubeController.dispose();
-    super.dispose();
-  }
-}
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Businessadministration(),
-    ),
-  );
 }

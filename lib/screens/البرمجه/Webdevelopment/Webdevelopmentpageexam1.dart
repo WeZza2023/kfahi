@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../WordPressDeveloper/WordPressDeveloperPage1.dart';
+import '../WordPressDeveloper/WordPressDeveloperPage.dart';
 
 class Webdevelopmentpageexam1 extends StatefulWidget {
   const Webdevelopmentpageexam1({super.key});

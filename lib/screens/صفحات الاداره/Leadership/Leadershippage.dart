@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'Leadershiptest1.dart';
+import '../../../constants/lectures.dart';
+import 'Leadershiptest.dart';
 
 class Leadershippage extends StatefulWidget {
-  const Leadershippage({super.key});
+  Leadershippage({super.key, required this.videoId, required this.videoNum});
+
+  final String videoId;
+  final int videoNum;
 
   @override
   _LeadershippageState createState() => _LeadershippageState();
@@ -18,7 +24,7 @@ class _LeadershippageState extends State<Leadershippage> {
     super.initState();
 
     _youtubeController = YoutubePlayerController(
-      initialVideoId: 'KpmdnTcmz4s', // Update the video ID here
+      initialVideoId: widget.videoId, // تحديث معرف الفيديو الجديد هنا
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -38,26 +44,89 @@ class _LeadershippageState extends State<Leadershippage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        // Video ended, automatically navigate to WordPressDeveloperPageexam1
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Leadershiptest1(),
-          ),
-        );
+        getUploadDoneLecs();
+        isText();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
+  void _playNextVid() {
+    if (widget.videoNum < LeaderShipVids.length - 1) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Leadershippage(
+              videoNum: widget.videoNum + 1,
+              videoId: LeaderShipVids[widget.videoNum + 1],
+            ),
+          ));
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> isText() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("Leadership");
+
+    final snapshot = await docRef.get();
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (doneLecs.length == LeaderShipVids.length) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Leadershiptest()));
+      } else {
+        _playNextVid();
+      }
+    }
+  }
+
+  Future<void> getUploadDoneLecs() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("Leadership");
+
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (!doneLecs.contains(widget.videoNum)) {
+        doneLecs.add(widget.videoNum);
+        await docRef.update({
+          'DoneLecs': doneLecs,
+        });
+      }
+    } else {
+      await docRef.set({
+        'DoneLecs': [widget.videoNum],
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المحاضره الاولي'),
+        title: Text('${widget.videoNum + 1} المحاضرة '),
       ),
       body: Column(
         children: [
-          // Top section: Video display
+          // القسم العلوي: عرض الفيديو
           Expanded(
             child: YoutubePlayer(
               controller: _youtubeController,
@@ -65,7 +134,7 @@ class _LeadershippageState extends State<Leadershippage> {
               progressIndicatorColor: Colors.blueAccent,
             ),
           ),
-          // Bottom section: Time bar
+          // القسم السفلي: شريط الوقت
           Container(
             padding: const EdgeInsets.all(16.0),
             color: Colors.blueGrey,
@@ -78,18 +147,4 @@ class _LeadershippageState extends State<Leadershippage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _youtubeController.dispose();
-    super.dispose();
-  }
-}
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Leadershippage(),
-    ),
-  );
 }

@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../../constants/questions.dart';
 
-class flutterpagetest extends StatefulWidget {
-  const flutterpagetest({super.key});
+class Hrpagetest extends StatefulWidget {
+  const Hrpagetest({super.key});
 
   @override
-  _flutterpagetestState createState() => _flutterpagetestState();
+  _HrpagetestState createState() => _HrpagetestState();
 }
 
-class _flutterpagetestState extends State<flutterpagetest> {
+class _HrpagetestState extends State<Hrpagetest> {
   int _currentQuestionIndex = 0;
   int _correctAnswersCount = 0;
   int _remainingTimeInSeconds = 60; // مدة السؤال بالثواني
@@ -27,7 +27,7 @@ class _flutterpagetestState extends State<flutterpagetest> {
 
   List<Map<String, dynamic>> _getRandomQuestions(int count) {
     final random = Random();
-    final shuffledQuestions = List<Map<String, dynamic>>.from(FlutterQues)
+    final shuffledQuestions = List<Map<String, dynamic>>.from(HrQues)
       ..shuffle(random);
     return shuffledQuestions.take(count).toList();
   }
@@ -100,7 +100,7 @@ class _flutterpagetestState extends State<flutterpagetest> {
     return Scaffold(
       backgroundColor: Colors.black, // خلفية الصفحة
       appBar: AppBar(
-        title: const Text('اختبار Flutter'),
+        title: const Text('اختبار HR'),
       ),
       body: Center(
         child: Column(
