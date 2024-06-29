@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/Ethicalhacking/Ethicalhackingpage.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/WordPressDeveloper/WordPressDeveloperPage1.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage1.dart';
+import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage.dart';
 import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/Ethicalhacking/lecs_page.dart';
+import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/lecs_page.dart';
 
 import '../coursepages.dart';
 
@@ -126,7 +127,7 @@ class _ProgrammingPageState extends State<ProgrammingPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const FlutterPage1(),
+                        builder: (context) => FlutterLecsPage(),
                       ),
                     );
                   },

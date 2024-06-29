@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfahi/constants.dart';
+import 'package:kfahi/constants/constants.dart';
 
 class ProductCard extends StatelessWidget {
   final String text;
@@ -41,7 +41,8 @@ class ProductCard extends StatelessWidget {
           Positioned(
               left: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultpadding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultpadding),
                 width: 150,
                 height: 100,
                 child: Image.asset(imagePath),
@@ -56,7 +57,8 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kDefaultpadding),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultpadding),
                     child: Text(
                       text,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(

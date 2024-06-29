@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage12.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage13.dart';
+import 'flutterpage.dart';
 
-class flutterpagetest12 extends StatefulWidget {
-  const flutterpagetest12({super.key});
+class flutterpagetest extends StatefulWidget {
+  const flutterpagetest({super.key});
 
   @override
-  _flutterpagetest12State createState() => _flutterpagetest12State();
+  _flutterpagetestState createState() => _flutterpagetestState();
 }
 
-class _flutterpagetest12State extends State<flutterpagetest12> {
+class _flutterpagetestState extends State<flutterpagetest> {
   int _currentQuestionIndex = 0;
   int _correctAnswersCount = 0;
   int _remainingTimeInSeconds = 60; // مدة السؤال بالثواني
@@ -105,8 +104,6 @@ class _flutterpagetest12State extends State<flutterpagetest12> {
       resultMessage =
           'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
       // انتقل إلى صفحة المحاضرة بعد رسوب المستخدم
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const FlutterPage12()));
     }
 
     // عرض رسالة النتيجة
@@ -133,7 +130,7 @@ class _flutterpagetest12State extends State<flutterpagetest12> {
     return Scaffold(
       backgroundColor: Colors.black, // خلفية الصفحة
       appBar: AppBar(
-        title: const Text('اختبار المحاضره 12'),
+        title: const Text('اختبار المحاضره 1'),
       ),
       body: Center(
         child: Column(
@@ -233,8 +230,6 @@ class NewPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // انتقل إلى الصفحة الجديدة
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const FlutterPage13()));
               },
               child: const Text('الانتقال للدرس التالي'),
             ),

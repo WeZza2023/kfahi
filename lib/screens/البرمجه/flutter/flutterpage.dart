@@ -3,20 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../constants/lectures.dart';
-import 'Ethicalhackingpagetest.dart';
+import 'flutterpagetest.dart';
 
-class Ethicalhackingpage extends StatefulWidget {
-  Ethicalhackingpage(
-      {super.key, required this.videoId, required this.videoNum});
+class FlutterPage extends StatefulWidget {
+  FlutterPage({super.key, required this.videoId, required this.videoNum});
 
   final String videoId;
   final int videoNum;
 
   @override
-  _EthicalhackingpageState createState() => _EthicalhackingpageState();
+  _FlutterPageState createState() => _FlutterPageState();
 }
 
-class _EthicalhackingpageState extends State<Ethicalhackingpage> {
+class _FlutterPageState extends State<FlutterPage> {
   late YoutubePlayerController _youtubeController;
   int _currentTime = 0;
 
@@ -58,13 +57,13 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
   }
 
   void _playNextVid() {
-    if (widget.videoNum < EthicalHackingVids.length - 1) {
+    if (widget.videoNum < FlutterVids.length - 1) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Ethicalhackingpage(
+            builder: (context) => FlutterPage(
               videoNum: widget.videoNum + 1,
-              videoId: EthicalHackingVids[widget.videoNum + 1],
+              videoId: FlutterVids[widget.videoNum + 1],
             ),
           ));
     } else {
@@ -79,14 +78,14 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
         .collection('users')
         .doc(userUid)
         .collection("courses")
-        .doc("Ethicalhacking");
+        .doc("Flutter");
 
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == EthicalHackingVids.length) {
+      if (doneLecs.length == FlutterVids.length) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => Ethicalhackingpagetest()));
+            MaterialPageRoute(builder: (context) => flutterpagetest()));
       } else {
         _playNextVid();
       }
@@ -100,7 +99,7 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
         .collection('users')
         .doc(userUid)
         .collection("courses")
-        .doc("Ethicalhacking");
+        .doc("Flutter");
 
     final snapshot = await docRef.get();
 

@@ -1,73 +1,41 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import '../../../constants/questions.dart';
 import 'Ethicalhackingpage.dart';
 
-class Ethicalhackingpagetest1 extends StatefulWidget {
-  const Ethicalhackingpagetest1({super.key});
+class Ethicalhackingpagetest extends StatefulWidget {
+  const Ethicalhackingpagetest({super.key});
 
   @override
-  _Ethicalhackingpagetest1State createState() =>
-      _Ethicalhackingpagetest1State();
+  _EthicalhackingpagetestState createState() => _EthicalhackingpagetestState();
 }
 
-class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
+class _EthicalhackingpagetestState extends State<Ethicalhackingpagetest> {
   int _currentQuestionIndex = 0;
   int _correctAnswersCount = 0;
   int _remainingTimeInSeconds = 60; // مدة السؤال بالثواني
 
-  final List<Map<String, dynamic>> _questions = [
-    {
-      'question': 'سؤال 1: ما هو شلولح',
-      'options': [
-        ' مدونه اللكتونيه',
-        'منصه انشاء مواقع نفتوح المصدر ',
-        'منصه تحليل البيانات',
-        'منصع تصميم الجرافيك'
-      ],
-      'correctOptionIndex': 1,
-    },
-    {
-      'question': 'سؤال 2: ما هي اللغه المبني بها منصة الووردبريس؟',
-      'options': [' dart', 'c++ ', 'php ', 'java '],
-      'correctOptionIndex': 2,
-    },
-    {
-      'question': ' ماذا يعني plugin',
-      'options': ['اضافات ', 'ثيمات', ' البيانات', 'تصميم '],
-      'correctOptionIndex': 0,
-    },
-    {
-      'question': ' لماذا نستخدام منصة ووردبريس؟',
-      'options': [
-        'موقع مفتوح المصدر مجاني ',
-        'سهل الاستخدام ',
-        'اسرع موقع',
-        'جميع ما سبق '
-      ],
-      'correctOptionIndex': 3,
-    },
-    {
-      'question': ' Control panel ما هي  ',
-      'options': [
-        'ثيم الموقع ',
-        'اضافه تسريع الموقه',
-        'لوحه التحكم ',
-        'نظام تحليل بينات '
-      ],
-      'correctOptionIndex': 2,
-    },
-  ];
-
   late Timer _timer;
+  late List <Map<String, dynamic>> _selectedQuestions;
 
   @override
   void initState() {
     super.initState();
+    _selectedQuestions = _getRandomQuestions(20);
     _startNextQuestion();
   }
 
+  List <Map<String, dynamic>> _getRandomQuestions(int count) {
+    final random = Random();
+    final shuffledQuestions = List<Map<String, dynamic>>.from(
+        EthicalHackingQues)
+      ..shuffle(random);
+    return shuffledQuestions.take(count).toList();
+  }
+
   void _startNextQuestion() {
-    if (_currentQuestionIndex < _questions.length) {
+    if (_currentQuestionIndex < _selectedQuestions.length) {
       _remainingTimeInSeconds = 60;
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
@@ -93,26 +61,21 @@ class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
   }
 
   void _showResult() {
-    double percentage = (_correctAnswersCount / _questions.length) * 100;
+    double percentage = (_correctAnswersCount / 20) * 100;
 
     String resultMessage;
     if (percentage >= 80) {
       resultMessage = 'مبروك لقد اجتزت الاختبار!';
       // انتقل إلى الصفحة الجديدة بعد اجتياز الاختبار
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const NewPage()));
+      Navigator.pop(context);
+      print("مبروك لقد اجتزت الاختبار");
     } else {
       resultMessage =
       'للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق!';
       // انتقل إلى صفحة المحاضرة بعد رسوب المستخدم
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  Ethicalhackingpage(
-                    videoId: '',
-                    videoNum: 0,
-                  )));
+      Navigator.pop(context);
+      print(
+          "للاسف لقد رسبت في الاختبار. سيتم ارجاعك للمحاضرة مرة أخرى بالتوفيق");
     }
 
     // عرض رسالة النتيجة
@@ -146,12 +109,12 @@ class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // سؤال
-            if (_questions.isNotEmpty &&
-                _currentQuestionIndex < _questions.length)
+            if (_selectedQuestions.isNotEmpty &&
+                _currentQuestionIndex < _selectedQuestions.length)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  _questions[_currentQuestionIndex]['question'],
+                  _selectedQuestions[_currentQuestionIndex]['question'],
                   style: const TextStyle(
                     fontSize: 30,
                     color: Colors.white,
@@ -169,19 +132,20 @@ class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
               ),
             const SizedBox(height: 20),
             if (_remainingTimeInSeconds > 0 &&
-                _questions.isNotEmpty &&
-                _currentQuestionIndex < _questions.length)
+                _selectedQuestions.isNotEmpty &&
+                _currentQuestionIndex < _selectedQuestions.length)
             // الخيارات
               Column(
                 children: List.generate(
-                  _questions[_currentQuestionIndex]['options'].length,
+                  _selectedQuestions[_currentQuestionIndex]['options'].length,
                       (index) {
                     return ElevatedButton(
                       onPressed: () {
                         _checkAnswer(index);
                       },
                       child: Text(
-                        _questions[_currentQuestionIndex]['options'][index],
+                        _selectedQuestions[_currentQuestionIndex]['options']
+                        [index],
                         style: const TextStyle(fontSize: 20),
                       ),
                     );
@@ -196,7 +160,7 @@ class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
 
   void _checkAnswer(int selectedOptionIndex) {
     int correctOptionIndex =
-    _questions[_currentQuestionIndex]['correctOptionIndex'];
+    _selectedQuestions[_currentQuestionIndex]['correctOptionIndex'];
 
     if (selectedOptionIndex == correctOptionIndex) {
       _correctAnswersCount++;
@@ -212,40 +176,39 @@ class _Ethicalhackingpagetest1State extends State<Ethicalhackingpagetest1> {
   }
 }
 
-class NewPage extends StatelessWidget {
-  const NewPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('صفحة جديدة'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'مبروك، لقد اجتزت الاختبار ووصلت إلى الصفحة الجديدة!',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // انتقل إلى الصفحة الجديدة
-
-              },
-              child: const Text('الانتقال للدرس التالي'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class NewPage extends StatelessWidget {
+//   const NewPage({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.black,
+//       appBar: AppBar(
+//         title: const Text('صفحة جديدة'),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             const Text(
+//               'مبروك، لقد اجتزت الاختبار ووصلت إلى الصفحة الجديدة!',
+//               style: TextStyle(
+//                 fontSize: 24,
+//                 color: Colors.white,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//               textAlign: TextAlign.center,
+//             ),
+//             const SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: () {
+//                 // انتقل إلى الصفحة الجديدة
+//               },
+//               child: const Text('الانتقال للدرس التالي'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

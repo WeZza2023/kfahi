@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/Ethicalhacking/Ethicalhackingpage.dart';
+import 'package:kfahi/screens/%D8%A7%D9%84%D8%A8%D8%B1%D9%85%D8%AC%D9%87/flutter/flutterpage.dart';
 import '../../../constants/lectures.dart';
 
-class EthicalhackingLecsPage extends StatefulWidget {
-  EthicalhackingLecsPage({super.key});
+class FlutterLecsPage extends StatefulWidget {
+  FlutterLecsPage({super.key});
 
   @override
-  State<EthicalhackingLecsPage> createState() => _EthicalhackingLecsPageState();
+  State<FlutterLecsPage> createState() => _FlutterLecsPagePageState();
 }
 
-class _EthicalhackingLecsPageState extends State<EthicalhackingLecsPage> {
+class _FlutterLecsPagePageState extends State<FlutterLecsPage> {
   late List<int> doneLecs = [];
 
   @override
@@ -32,7 +32,7 @@ class _EthicalhackingLecsPageState extends State<EthicalhackingLecsPage> {
         .collection('users')
         .doc(userUid)
         .collection("courses")
-        .doc("Ethicalhacking");
+        .doc("Flutter");
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
@@ -75,8 +75,8 @@ class _EthicalhackingLecsPageState extends State<EthicalhackingLecsPage> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return Ethicalhackingpage(
-                            videoId: EthicalHackingVids[index],
+                          return FlutterPage(
+                            videoId: FlutterVids[index],
                             videoNum: index,
                           );
                         },
@@ -99,7 +99,7 @@ class _EthicalhackingLecsPageState extends State<EthicalhackingLecsPage> {
                   ),
                 ),
                 padding: EdgeInsets.all(15),
-                itemCount: EthicalHackingVids.length,
+                itemCount: FlutterVids.length,
               ),
             )
           ],
