@@ -55,6 +55,7 @@ dependencies:
   flutter_marquee: ^2.0.1
   marquee: ^2.2.3
   fading_edge_scrollview: ^3.0.0
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:

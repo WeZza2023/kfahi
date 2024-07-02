@@ -37,7 +37,7 @@ class _WordpressdeveloperpageState extends State<Wordpressdeveloperpage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -45,8 +45,9 @@ class _WordpressdeveloperpageState extends State<Wordpressdeveloperpage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -57,22 +58,7 @@ class _WordpressdeveloperpageState extends State<Wordpressdeveloperpage> {
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < WordPrsVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Wordpressdeveloperpage(
-              videoNum: widget.videoNum + 1,
-              videoId: WordPrsVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef = db
@@ -82,18 +68,27 @@ class _WordpressdeveloperpageState extends State<Wordpressdeveloperpage> {
         .doc("WordPress");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == WordPrsVids.length) {
+      if (widget.videoNum < WordPrsVids.length - 1 &&
+          doneLecs.length != WordPrsVids.length) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => Wordpressdeveloperpageexam()));
+              builder: (context) => Wordpressdeveloperpage(
+                videoNum: widget.videoNum + 1,
+                videoId: WordPrsVids[widget.videoNum + 1],
+              ),
+            ));
       } else {
-        _playNextVid();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Wordpressdeveloperpageexam()));
       }
     }
   }
+
+
 
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;

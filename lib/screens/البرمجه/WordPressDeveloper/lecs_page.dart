@@ -32,7 +32,7 @@ class _WordPrsLecsPageState extends State<WordPrsLecsPage> {
         .collection('users')
         .doc(userUid)
         .collection("courses")
-        .doc("WordPressDeveloper");
+        .doc("WordPress");
     final snapshot = await docRef.get();
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');

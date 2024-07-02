@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'Cost accounting/Costaccountingpage1.dart';
-import 'Financial accounting/Financialaccountingpage.dart';
-import 'Tax accounting/Taxaccountingpage.dart';
-import 'accounting administration/accountingadministrationpage.dart';
+import 'Cost accounting/lecs_page.dart';
+import 'Financial accounting/lecs_page.dart';
+import 'Tax accounting/lecs_page.dart';
+import 'accounting administration/lecs_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -123,7 +123,7 @@ class _accountingpageState extends State<accountingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Financialaccountingpage(),
+                        builder: (context) => FinancialAccountingLecsPage(),
                       ),
                     );
                   },
@@ -136,8 +136,7 @@ class _accountingpageState extends State<accountingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const accountingadministrationpage(),
+                        builder: (context) => AccAdminLecsPage(),
                       ),
                     );
                   },
@@ -157,7 +156,7 @@ class _accountingpageState extends State<accountingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Costaccountingpage1(),
+                        builder: (context) => CostAccountingLecsPage(),
                       ),
                     );
                   },
@@ -170,7 +169,7 @@ class _accountingpageState extends State<accountingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Taxaccountingpage(),
+                        builder: (context) => TaxAccountingLecsPage(),
                       ),
                     );
                   },

@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%B5%D9%85%D9%8A%D9%85/%D9%81%D9%88%D8%AA%D9%88%20%D8%B4%D9%88%D8%A8/lecs_page.dart';
 import 'package:kfahi/screens/coursepages.dart';
-import 'UL UX/ULUXpage.dart';
+import 'UL UX/UIUXpage.dart';
+import 'UL UX/lecs_page.dart';
 import 'canva/canvapage.dart';
-import 'فوتو شوب/photopage.dart';
+import 'canva/lecs_page.dart';
+import 'فوتو شوب/photo_shop_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -120,7 +123,7 @@ class _designpageState extends State<designpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ULUXpage(),
+                        builder: (context) => UIUXLecsPage(),
                       ),
                     );
                   },
@@ -133,7 +136,7 @@ class _designpageState extends State<designpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const photopage(),
+                        builder: (context) => PhotoShopLecsPage(),
                       ),
                     );
                   },
@@ -166,7 +169,7 @@ class _designpageState extends State<designpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const canvapage(),
+                        builder: (context) => CanvaLecsPage(),
                       ),
                     );
                   },

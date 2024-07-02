@@ -36,7 +36,7 @@ class _FlutterPageState extends State<FlutterPage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -44,8 +44,9 @@ class _FlutterPageState extends State<FlutterPage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -56,22 +57,7 @@ class _FlutterPageState extends State<FlutterPage> {
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < FlutterVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FlutterPage(
-              videoNum: widget.videoNum + 1,
-              videoId: FlutterVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef = db
@@ -81,16 +67,27 @@ class _FlutterPageState extends State<FlutterPage> {
         .doc("Flutter");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == FlutterVids.length) {
+      if (widget.videoNum < FlutterVids.length - 1 &&
+          doneLecs.length != FlutterVids.length) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FlutterPage(
+                videoNum: widget.videoNum + 1,
+                videoId: FlutterVids[widget.videoNum + 1],
+              ),
+            ));
+      } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => flutterpagetest()));
-      } else {
-        _playNextVid();
       }
     }
   }
+
+
 
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;

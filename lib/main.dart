@@ -5,7 +5,7 @@ import 'package:kfahi/firebase_options.dart';
 import 'package:kfahi/screens/auth/SignInScreen.dart';
 import 'package:kfahi/screens/auth/Signup.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:kfahi/screens/CustomerServicePage.dart';
+import 'package:kfahi/screens/contactus-page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -123,7 +123,7 @@ class MyHomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CustomerServicePage()),
+                          builder: (context) => const ContactusPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -132,7 +132,7 @@ class MyHomePage extends StatelessWidget {
                         fontWeight: FontWeight.bold), // نوع الخط
                   ),
                   child: const Text(
-                    'Customers Service',
+                    'Contact Us',
                     style: TextStyle(
                       color: Colors.white, // لون الكتابة
                       fontWeight: FontWeight.bold,

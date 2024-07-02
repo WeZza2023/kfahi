@@ -39,7 +39,7 @@ class _BusinessadministrationPageState
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -47,8 +47,9 @@ class _BusinessadministrationPageState
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -59,22 +60,7 @@ class _BusinessadministrationPageState
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < BussinessVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BusinessadministrationPage(
-              videoNum: widget.videoNum + 1,
-              videoId: BussinessVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef = db
@@ -84,15 +70,24 @@ class _BusinessadministrationPageState
         .doc("Business");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == BussinessVids.length) {
+      if (widget.videoNum < BussinessVids.length - 1 &&
+          doneLecs.length != BussinessVids.length) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BusinessadministrationPage(
+                videoNum: widget.videoNum + 1,
+                videoId: BussinessVids[widget.videoNum + 1],
+              ),
+            ));
+      } else {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => Businessadministrationtest()));
-      } else {
-        _playNextVid();
       }
     }
   }

@@ -5,9 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-void main() async {
-  runApp(const MaterialApp());
-}
+import '../../main.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -279,6 +277,18 @@ class _RegistrationConfirmationPageState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirmation'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyHomePage(),
+              ),
+              (route) => false,
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(

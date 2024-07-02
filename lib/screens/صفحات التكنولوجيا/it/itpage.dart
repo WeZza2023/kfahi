@@ -1,15 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7/it/itpagetest1.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../constants/lectures.dart';
+import 'itpagetest.dart';
 
-class itpage extends StatefulWidget {
-  const itpage({super.key});
+class ITPage extends StatefulWidget {
+  ITPage({super.key, required this.videoId, required this.videoNum});
+
+  final String videoId;
+  final int videoNum;
 
   @override
-  _itpageState createState() => _itpageState();
+  _ITPageState createState() => _ITPageState();
 }
 
-class _itpageState extends State<itpage> {
+class _ITPageState extends State<ITPage> {
   late YoutubePlayerController _youtubeController;
   int _currentTime = 0;
 
@@ -18,7 +24,7 @@ class _itpageState extends State<itpage> {
     super.initState();
 
     _youtubeController = YoutubePlayerController(
-      initialVideoId: 'vHC31DcmPEo', // تغيير الرمز المميز للفيديو الجديد هنا
+      initialVideoId: widget.videoId, // تحديث معرف الفيديو الجديد هنا
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -30,7 +36,7 @@ class _itpageState extends State<itpage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -38,22 +44,80 @@ class _itpageState extends State<itpage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        // انتهى الفيديو، قم بالانتقال تلقائيًا إلى صفحة icdlpagetest1
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const itpagetest1(),
-          ),
-        );
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _playNextVid() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("IT");
+
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (widget.videoNum < ITVids.length - 1 &&
+          doneLecs.length != ITVids.length) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ITPage(
+                    videoNum: widget.videoNum + 1,
+                    videoId: ITVids[widget.videoNum + 1],
+                  ),
+            ));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => ITPageTest()));
+      }
+    }
+  }
+
+
+
+  Future<void> getUploadDoneLecs() async {
+    final db = FirebaseFirestore.instance;
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef =
+        db.collection('users').doc(userUid).collection("courses").doc("IT");
+
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      List<dynamic> doneLecs = snapshot.get('DoneLecs');
+      if (!doneLecs.contains(widget.videoNum)) {
+        doneLecs.add(widget.videoNum);
+        await docRef.update({
+          'DoneLecs': doneLecs,
+        });
+      }
+    } else {
+      await docRef.set({
+        'DoneLecs': [widget.videoNum],
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المحاضره الاولي'),
+        title: Text('${widget.videoNum + 1} المحاضرة '),
       ),
       body: Column(
         children: [
@@ -78,18 +142,4 @@ class _itpageState extends State<itpage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    _youtubeController.dispose();
-    super.dispose();
-  }
-}
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: itpage(),
-    ),
-  );
 }

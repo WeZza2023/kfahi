@@ -2,8 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7/icdl/icdlpage.dart';
 import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7/it/itpage.dart';
+import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7/tot/lecs_page.dart';
 import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D9%83%D9%86%D9%88%D9%84%D9%88%D8%AC%D9%8A%D8%A7/tot/totpage.dart';
 import 'package:kfahi/screens/coursepages.dart';
+
+import 'icdl/lecs_page.dart';
+import 'it/lecs_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -120,7 +124,7 @@ class _TechnologypageState extends State<Technologypage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const totpage(),
+                        builder: (context) => TOTLecsPage(),
                       ),
                     );
                   },
@@ -133,7 +137,7 @@ class _TechnologypageState extends State<Technologypage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const itpage(),
+                        builder: (context) => ITLecsPage(),
                       ),
                     );
                   },
@@ -166,7 +170,7 @@ class _TechnologypageState extends State<Technologypage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const icdlpage(),
+                        builder: (context) => ICDLLecsPage(),
                       ),
                     );
                   },

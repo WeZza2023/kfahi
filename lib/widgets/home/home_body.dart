@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kfahi/screens/CustomerServicePage.dart';
+import 'package:kfahi/screens/contactus-page.dart';
 import 'package:kfahi/screens/auth/SignInScreen.dart';
 import 'package:kfahi/screens/auth/Signup.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -136,9 +136,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const CustomerServicePage()));
+                            builder: (context) => const ContactusPage()));
                       },
-                      child: const Text('خدمة العملاء',
+                      child: const Text('تواصل معنا',
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,

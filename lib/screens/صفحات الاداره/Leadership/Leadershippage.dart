@@ -36,7 +36,7 @@ class _LeadershippageState extends State<Leadershippage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -44,8 +44,9 @@ class _LeadershippageState extends State<Leadershippage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -56,22 +57,7 @@ class _LeadershippageState extends State<Leadershippage> {
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < LeaderShipVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Leadershippage(
-              videoNum: widget.videoNum + 1,
-              videoId: LeaderShipVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef = db
@@ -81,16 +67,28 @@ class _LeadershippageState extends State<Leadershippage> {
         .doc("Leadership");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == LeaderShipVids.length) {
+      if (widget.videoNum < LeaderShipVids.length - 1 &&
+          doneLecs.length != LeaderShipVids.length) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Leadershiptest()));
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Leadershippage(
+                    videoNum: widget.videoNum + 1,
+                    videoId: LeaderShipVids[widget.videoNum + 1],
+                  ),
+            ));
       } else {
-        _playNextVid();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Leadershiptest()));
       }
     }
   }
+
+
 
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;

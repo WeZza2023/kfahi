@@ -37,7 +37,7 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -45,8 +45,9 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -57,22 +58,7 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < EthicalHackingVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Ethicalhackingpage(
-              videoNum: widget.videoNum + 1,
-              videoId: EthicalHackingVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef = db
@@ -82,16 +68,27 @@ class _EthicalhackingpageState extends State<Ethicalhackingpage> {
         .doc("Ethicalhacking");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == EthicalHackingVids.length) {
+      if (widget.videoNum < EthicalHackingVids.length - 1 &&
+          doneLecs.length != EthicalHackingVids.length) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Ethicalhackingpage(
+                    videoNum: widget.videoNum + 1,
+                    videoId: EthicalHackingVids[widget.videoNum + 1],
+                  ),
+            ));
+      } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => Ethicalhackingpagetest()));
-      } else {
-        _playNextVid();
       }
     }
   }
+
 
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;

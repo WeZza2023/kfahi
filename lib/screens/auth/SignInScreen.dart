@@ -4,12 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:kfahi/screens/firstpage.dart';
 import 'Signup.dart';
 
-void main() async {
-  runApp(const MaterialApp(
-    home: SignInScreen(),
-  ));
-}
-
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'seo/seo.dart';
-import 'Customer service/Customerservicepage.dart';
-import 'E-Marketing/EMarketingpage.dart';
-import 'ContentWritin/ContentWritin.dart';
+import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/E-Marketing/lecs_page.dart';
+import 'package:kfahi/screens/%D8%B5%D9%81%D8%AD%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/seo/lecs_page.dart';
+import 'ContentWritin/lecs_page.dart';
+import 'Customer service/lecs_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -122,7 +122,7 @@ class _MarketingpageState extends State<Marketingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const seo(),
+                        builder: (context) => SeoLecsPage(),
                       ),
                     );
                   },
@@ -135,7 +135,7 @@ class _MarketingpageState extends State<Marketingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const EMarketingpage(),
+                        builder: (context) => EMarketingLecsPage(),
                       ),
                     );
                   },
@@ -155,7 +155,7 @@ class _MarketingpageState extends State<Marketingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Customerservicepage(),
+                        builder: (context) => CustomerServiceLecsPage(),
                       ),
                     );
                   },
@@ -168,7 +168,7 @@ class _MarketingpageState extends State<Marketingpage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ContentWritin(),
+                        builder: (context) => ContentWritingLecsPage(),
                       ),
                     );
                   },

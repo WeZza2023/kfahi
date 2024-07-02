@@ -36,7 +36,7 @@ class _HrpageState extends State<Hrpage> {
       ),
     );
 
-    _youtubeController.addListener(() {
+    _youtubeController.addListener(() async {
       if (_youtubeController.value.playerState == PlayerState.playing) {
         setState(() {
           _currentTime = _youtubeController.value.position.inSeconds;
@@ -44,8 +44,9 @@ class _HrpageState extends State<Hrpage> {
       }
 
       if (_youtubeController.value.playerState == PlayerState.ended) {
-        getUploadDoneLecs();
-        isText();
+        _youtubeController.pause();
+        await getUploadDoneLecs();
+        _playNextVid();
       }
     });
   }
@@ -56,44 +57,43 @@ class _HrpageState extends State<Hrpage> {
     super.dispose();
   }
 
-  void _playNextVid() {
-    if (widget.videoNum < HrVids.length - 1) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Hrpage(
-              videoNum: widget.videoNum + 1,
-              videoId: HrVids[widget.videoNum + 1],
-            ),
-          ));
-    } else {
-      Navigator.pop(context);
-    }
-  }
-
-  Future<void> isText() async {
+  Future<void> _playNextVid() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final docRef =
-        db.collection('users').doc(userUid).collection("courses").doc("HR");
+    final docRef = db
+        .collection('users')
+        .doc(userUid)
+        .collection("courses")
+        .doc("HR");
 
     final snapshot = await docRef.get();
+
     if (snapshot.exists) {
       List<dynamic> doneLecs = snapshot.get('DoneLecs');
-      if (doneLecs.length == HrVids.length) {
+      if (widget.videoNum < HrVids.length - 1 &&
+          doneLecs.length != HrVids.length) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Hrpagetest()));
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Hrpage(
+                    videoNum: widget.videoNum + 1,
+                    videoId: HrVids[widget.videoNum + 1],
+                  ),
+            ));
       } else {
-        _playNextVid();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Hrpagetest()));
       }
     }
   }
+
 
   Future<void> getUploadDoneLecs() async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
     final docRef =
-        db.collection('users').doc(userUid).collection("courses").doc("HR");
+    db.collection('users').doc(userUid).collection("courses").doc("HR");
 
     final snapshot = await docRef.get();
 
