@@ -29,6 +29,7 @@ class SignInCubit extends Cubit<SignInState> {
           key: 'password',
           value: password,
         );
+        
         emit(SignInSuccessState());
       } else {
         await FirebaseAuth.instance.signOut();

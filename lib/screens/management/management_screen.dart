@@ -10,8 +10,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_cubit.dart';
-import '../video/video_screen.dart';
 
 class ManagementScreen extends StatelessWidget {
   const ManagementScreen({super.key});
@@ -40,7 +38,7 @@ class ManagementScreen extends StatelessWidget {
               ],
             ),
             DefaultTabController(
-              length: 3,
+              length: 9,
               child: Column(
                 children: [
                   Container(
@@ -84,11 +82,34 @@ class ManagementScreen extends StatelessWidget {
                           onTap: (index) {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
-                              cubit.getDoneLecs(docName: 'Business');
+                              cubit.getDoneLecs(
+                                  docName: 'Business', isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'HR');
+                              cubit.getDoneLecs(docName: 'HR', isCourse: true);
                             } else if (index == 2) {
-                              cubit.getDoneLecs(docName: 'Leadership');
+                              cubit.getDoneLecs(
+                                  docName: 'Leadership', isCourse: true);
+                            } else if (index == 3) {
+                              cubit.getDoneLecs(
+                                  docName:
+                                      'Financial management in emerging companies',
+                                  isCourse: true);
+                            } else if (index == 4) {
+                              cubit.getDoneLecs(docName: 'PMP', isCourse: true);
+                            } else if (index == 5) {
+                              cubit.getDoneLecs(
+                                  docName: 'Risk management', isCourse: true);
+                            } else if (index == 6) {
+                              cubit.getDoneLecs(
+                                  docName: 'Purchasing Department',
+                                  isCourse: true);
+                            } else if (index == 7) {
+                              cubit.getDoneLecs(
+                                  docName: 'Stores Department', isCourse: true);
+                            } else if (index == 8) {
+                              cubit.getDoneLecs(
+                                  docName: 'Chain and supply management',
+                                  isCourse: true);
                             }
                           },
                           tabs: [
@@ -100,9 +121,34 @@ class ManagementScreen extends StatelessWidget {
                               S.of(context).hr,
                               color: kBackgroundColor,
                             ).p4,
-                            BodySmallText(S.of(context).leadership,
-                                    color: kBackgroundColor)
-                                .p4,
+                            BodySmallText(
+                              S.of(context).leadership,
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'الاداره الماليه في الشركات الناشئة',
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'PMP',
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'اداره المخاطر',
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'اداره المشتريات',
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'اداره المخازن',
+                              color: kBackgroundColor,
+                            ).p4,
+                            BodySmallText(
+                              'اداره السلاسل والامداد',
+                              color: kBackgroundColor,
+                            ).p4,
                           ],
                         ),
                       ],
@@ -124,140 +170,62 @@ class ManagementScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: BussinessVids[index],
-                                        videoNum: index,
-                                        course: 'Business',
-                                        courseVids: BussinessVids,
-                                        testQuestions: BussinessQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: BussinessVids.length,
+                              LecNumbers(
+                                testQuestions: BussinessQues,
+                                courseVids: BussinessVids,
+                                cubit: cubit,
+                                courseName: 'Business',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: HrVids[index],
-                                        videoNum: index,
-                                        course: 'HR',
-                                        courseVids: HrVids,
-                                        testQuestions: HrQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: HrVids.length,
+                              LecNumbers(
+                                testQuestions: HrQues,
+                                courseVids: HrVids,
+                                cubit: cubit,
+                                courseName: 'HR',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: LeaderShipVids[index],
-                                        videoNum: index,
-                                        course: 'Leadership',
-                                        courseVids: LeaderShipVids,
-                                        testQuestions: LeaderShipQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: LeaderShipVids.length,
+                              LecNumbers(
+                                testQuestions: LeaderShipQues,
+                                courseVids: LeaderShipVids,
+                                cubit: cubit,
+                                courseName: 'Leadership',
+                              ),
+                              LecNumbers(
+                                testQuestions:
+                                    FinancialmanagementinemergingcompaniesQues,
+                                courseVids:
+                                    FinancialmanagementinemergingcompaniesVids,
+                                cubit: cubit,
+                                courseName:
+                                    'Financial management in emerging companies',
+                              ),
+                              LecNumbers(
+                                testQuestions: PMPQues,
+                                courseVids: PMPVids,
+                                cubit: cubit,
+                                courseName: 'PMP',
+                              ),
+                              LecNumbers(
+                                testQuestions: RiskmanagementQues,
+                                courseVids: RiskmanagementVids,
+                                cubit: cubit,
+                                courseName: 'Risk management',
+                              ),
+                              LecNumbers(
+                                testQuestions: PurchasingDepartmentQues,
+                                courseVids: PurchasingDepartmentVids,
+                                cubit: cubit,
+                                courseName: 'Purchasing Department',
+                              ),
+                              LecNumbers(
+                                testQuestions: StoresQues,
+                                courseVids: StoresVids,
+                                cubit: cubit,
+                                courseName: 'Stores Department',
+                              ),
+                              LecNumbers(
+                                testQuestions: ChainandsupplymanagementQues,
+                                courseVids: ChainandsupplymanagementVids,
+                                cubit: cubit,
+                                courseName: 'Chain and supply management',
                               ),
                             ],
                           ).tP25.hP16,

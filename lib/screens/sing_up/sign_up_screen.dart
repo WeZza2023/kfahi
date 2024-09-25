@@ -1,9 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/sing_up/sign_up_cubit.dart';
 import 'package:kfahi/screens/sing_up/sign_up_state.dart';
-
 import '../../components/components.dart';
 import '../../constants/colors.dart';
 import '../../constants/custom_texts.dart';
@@ -30,20 +31,20 @@ class SignUpScreen extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) => AppPopupDialog(
-              title: 'تم تسجيل حسابك بنجاح',
+              title: S.of(context).your_acc_has_been_created_successfully,
               body: [
-                const BodySmallText(
-                  'قم بنسخ كود العضوية الخاص بك ثم تواصل مع الدعم لتفعيل حسابك.',
+                BodySmallText(
+                  S.of(context).copy_code_and_contact_support,
                   maxLines: 3,
                 ).vP16,
                 CustomButton(
-                    text: 'تواصل مع الدعم',
+                    text: S.of(context).contact_support,
                     onPressed: () {
                       cubit.launchWhatsApp();
                     },
                     color: kActiveColor),
                 CustomButton(
-                    text: 'نسخ كود العضوية',
+                    text: S.of(context).copy_code,
                     onPressed: () {
                       cubit.copyCode(context: context);
                     },
@@ -101,7 +102,6 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       child: Image.asset(
                         "assets/images/logo.x.png",
-                        scale: AppSizes.getBaseScale(context),
                       ),
                     ),
                     Container(
@@ -122,6 +122,41 @@ class SignUpScreen extends StatelessWidget {
                               color: Colors.white,
                               weight: FontWeight.bold,
                             ).tp(AppSizes.getBaseScale(context) * 25),
+                            InkWell(
+                              onTap: () {
+                                cubit.pickImage();
+                              },
+                              child: AdvancedAvatar(
+                                size: AppSizes.getBaseScale(context) * 100,
+                                decoration: BoxDecoration(
+                                    border: cubit.hasImage == false
+                                        ? Border.all(
+                                            color: Colors.red, width: 2)
+                                        : null,
+                                    color: Colors.white,
+                                    shape: BoxShape.circle),
+                                child: cubit.pickedImage == null
+                                    ? Icon(
+                                        Icons.photo,
+                                        color: kMainColor,
+                                        size:
+                                            AppSizes.getBaseScale(context) * 30,
+                                      )
+                                    : Image.file(
+                                        File(cubit.pickedImage!.path),
+                                        fit: BoxFit.cover,
+                                      ),
+                              ).tP25,
+                            ),
+                            if (cubit.hasImage == false)
+                              BodySmallText(
+                                S.of(context).please_select_profile_picture,
+                                color: Colors.red,
+                                weight: FontWeight.normal,
+                              ).tP4,
+                            const Divider(
+                              color: Colors.transparent,
+                            ),
                             CustomTextField(
                               controller: nameController,
                               hintText: S.of(context).name,
@@ -132,7 +167,7 @@ class SignUpScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
-                            ).p16.tP25,
+                            ).p16,
                             CustomTextField(
                               controller: phoneController,
                               hintText: S.of(context).phone,
@@ -170,17 +205,14 @@ class SignUpScreen extends StatelessWidget {
                               },
                             ).p16,
                             state is SignUpLoadingState
-                                ? CircularProgressIndicator(
-                                    color: kActiveColor,
-                                    strokeWidth: 2,
-                                    strokeAlign:
-                                        -5 * AppSizes.getBaseScale(context),
-                                    strokeCap: StrokeCap.round,
-                                  ).bP25
+                                ? AppLoadingIndicator(context: context).bP25
                                 : CustomButton(
                                     text: S.of(context).sign_up,
                                     onPressed: () {
-                                      if (formKey.currentState!.validate()) {
+                                      cubit.checkImage();
+
+                                      if (formKey.currentState!.validate() &&
+                                          cubit.pickedImage != null) {
                                         cubit.signUpWithEmailPassword(
                                             email: emailController.text,
                                             password: passwordController.text,
@@ -208,7 +240,7 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            ),
+                            ).bP25,
                           ],
                         ),
                       ),

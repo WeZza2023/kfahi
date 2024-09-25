@@ -11,8 +11,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_cubit.dart';
-import '../video/video_screen.dart';
 
 class MarketingScreen extends StatelessWidget {
   const MarketingScreen({super.key});
@@ -41,7 +39,7 @@ class MarketingScreen extends StatelessWidget {
               ],
             ),
             DefaultTabController(
-              length: 4,
+              length: 6,
               child: Column(
                 children: [
                   Container(
@@ -85,13 +83,23 @@ class MarketingScreen extends StatelessWidget {
                           onTap: (index) {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
-                              cubit.getDoneLecs(docName: 'ContentWriting');
+                              cubit.getDoneLecs(
+                                  docName: 'ContentWriting', isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'Customer service');
+                              cubit.getDoneLecs(
+                                  docName: 'Customer service', isCourse: true);
                             } else if (index == 2) {
-                              cubit.getDoneLecs(docName: 'E-Marketing');
+                              cubit.getDoneLecs(
+                                  docName: 'E-Marketing', isCourse: true);
                             } else if (index == 3) {
-                              cubit.getDoneLecs(docName: 'SEO');
+                              cubit.getDoneLecs(docName: 'SEO', isCourse: true);
+                            } else if (index == 4) {
+                              cubit.getDoneLecs(
+                                  docName: 'Marketing Diploma', isCourse: true);
+                            } else if (index == 5) {
+                              cubit.getDoneLecs(
+                                  docName: 'Customer satisfaction course',
+                                  isCourse: true);
                             }
                           },
                           tabs: [
@@ -109,6 +117,13 @@ class MarketingScreen extends StatelessWidget {
                             BodySmallText(S.of(context).seo,
                                     color: kBackgroundColor)
                                 .p4,
+                            const BodySmallText('دبلومه التسويق',
+                                    color: kBackgroundColor)
+                                .p4,
+                            const BodySmallText(
+                              'رضا العملاء',
+                              color: kBackgroundColor,
+                            ).p4,
                           ],
                         ),
                       ],
@@ -130,185 +145,41 @@ class MarketingScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: ContentWritingVids[index],
-                                        videoNum: index,
-                                        course: 'ContentWriting',
-                                        courseVids: ContentWritingVids,
-                                        testQuestions: ContentWritingQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: ContentWritingVids.length,
+                              LecNumbers(
+                                testQuestions: ContentWritingQues,
+                                courseVids: ContentWritingVids,
+                                cubit: cubit,
+                                courseName: 'ContentWriting',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: CustomerServicesVids[index],
-                                        videoNum: index,
-                                        course: 'Customer service',
-                                        courseVids: CustomerServicesVids,
-                                        testQuestions: CustomerServicesQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: CustomerServicesVids.length,
+                              LecNumbers(
+                                testQuestions: CustomerServicesQues,
+                                courseVids: CustomerServicesVids,
+                                cubit: cubit,
+                                courseName: 'Customer service',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: MarketingVids[index],
-                                        videoNum: index,
-                                        course: 'E-Marketing',
-                                        courseVids: MarketingVids,
-                                        testQuestions: MarketingQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: MarketingVids.length,
+                              LecNumbers(
+                                testQuestions: ElectronicmarketingQues,
+                                courseVids: ElectronicmarketingVids,
+                                cubit: cubit,
+                                courseName: 'E-Marketing',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: SEOVids[index],
-                                        videoNum: index,
-                                        course: 'SEO',
-                                        courseVids: SEOVids,
-                                        testQuestions: SEOQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: SEOVids.length,
+                              LecNumbers(
+                                testQuestions: SEOQues,
+                                courseVids: SEOVids,
+                                cubit: cubit,
+                                courseName: 'SEO',
+                              ),
+                              LecNumbers(
+                                testQuestions: MarketingDiplomaQues,
+                                courseVids: MarketingDiplomaVids,
+                                cubit: cubit,
+                                courseName: 'Marketing Diploma',
+                              ),
+                              LecNumbers(
+                                testQuestions: CustomersatisfactioncourseQues,
+                                courseVids: CustomersatisfactioncourseVids,
+                                cubit: cubit,
+                                courseName: 'Customer satisfaction course',
                               ),
                             ],
                           ).tP25.hP16,

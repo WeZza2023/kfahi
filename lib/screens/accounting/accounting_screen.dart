@@ -11,8 +11,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_cubit.dart';
-import '../video/video_screen.dart';
 
 class AccountingScreen extends StatelessWidget {
   const AccountingScreen({super.key});
@@ -86,14 +84,18 @@ class AccountingScreen extends StatelessWidget {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
                               cubit.getDoneLecs(
-                                  docName: 'Accounting Administration');
+                                  docName: 'Accounting Administration',
+                                  isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'Cost Accounting');
+                              cubit.getDoneLecs(
+                                  docName: 'Cost Accounting', isCourse: true);
                             } else if (index == 2) {
                               cubit.getDoneLecs(
-                                  docName: 'Financial Accounting');
+                                  docName: 'Financial Accounting',
+                                  isCourse: true);
                             } else if (index == 3) {
-                              cubit.getDoneLecs(docName: 'Tax accounting');
+                              cubit.getDoneLecs(
+                                  docName: 'Tax accounting', isCourse: true);
                             }
                           },
                           tabs: [
@@ -132,185 +134,29 @@ class AccountingScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: AccAdminVids[index],
-                                        videoNum: index,
-                                        course: 'Accounting Administration',
-                                        courseVids: AccAdminVids,
-                                        testQuestions: AccAdminQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: AccAdminVids.length,
+                              LecNumbers(
+                                testQuestions: AccAdminQues,
+                                courseVids: AccAdminVids,
+                                cubit: cubit,
+                                courseName: 'Accounting Administration',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: CostAccVids[index],
-                                        videoNum: index,
-                                        course: 'Cost Accounting',
-                                        courseVids: CostAccVids,
-                                        testQuestions: CostAccQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: CostAccVids.length,
+                              LecNumbers(
+                                testQuestions: CostAccQues,
+                                courseVids: CostAccVids,
+                                cubit: cubit,
+                                courseName: 'Cost Accounting',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: FinanceAccVids[index],
-                                        videoNum: index,
-                                        course: 'Financial Accounting',
-                                        courseVids: FinanceAccVids,
-                                        testQuestions: FinanceAccQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: FinanceAccVids.length,
+                              LecNumbers(
+                                testQuestions: FinanceAccQues,
+                                courseVids: FinanceAccVids,
+                                cubit: cubit,
+                                courseName: 'Financial Accounting',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: TaxAccVids[index],
-                                        videoNum: index,
-                                        course: 'Tax accounting',
-                                        courseVids: TaxAccVids,
-                                        testQuestions: TaxAccQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: TaxAccVids.length,
+                              LecNumbers(
+                                testQuestions: TaxAccQues,
+                                courseVids: TaxAccVids,
+                                cubit: cubit,
+                                courseName: 'Tax accounting',
                               ),
                             ],
                           ).tP25.hP16,

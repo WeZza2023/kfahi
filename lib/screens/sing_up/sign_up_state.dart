@@ -11,3 +11,11 @@ class SignUpErrorState extends SignUpState {}
 class WeakPasswordState extends SignUpState {}
 
 class InvalidEmailState extends SignUpState {}
+
+class PickImageSuccessState extends SignUpState {}
+
+class PickImageErrorState extends SignUpState {}
+
+class CheckImageSuccessState extends SignUpState {}
+
+class CheckImageErrorState extends SignUpState {}

@@ -180,6 +180,16 @@ class S {
     );
   }
 
+  /// `Please select profile picture`
+  String get please_select_profile_picture {
+    return Intl.message(
+      'Please select profile picture',
+      name: 'please_select_profile_picture',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email or password incorrect`
   String get email_or_password_incorrect {
     return Intl.message(
@@ -230,6 +240,46 @@ class S {
     );
   }
 
+  /// `Your account has been created successfully`
+  String get your_acc_has_been_created_successfully {
+    return Intl.message(
+      'Your account has been created successfully',
+      name: 'your_acc_has_been_created_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy code and contact support`
+  String get copy_code_and_contact_support {
+    return Intl.message(
+      'Copy code and contact support',
+      name: 'copy_code_and_contact_support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy code`
+  String get copy_code {
+    return Intl.message(
+      'Copy code',
+      name: 'copy_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact support`
+  String get contact_support {
+    return Intl.message(
+      'Contact support',
+      name: 'contact_support',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sorry no courses available for now in this field !`
   String get no_courses_available {
     return Intl.message(
@@ -275,6 +325,16 @@ class S {
     return Intl.message(
       'Initiatives',
       name: 'initiatives',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No initiatives available`
+  String get no_initiatives_available {
+    return Intl.message(
+      'No initiatives available',
+      name: 'no_initiatives_available',
       desc: '',
       args: [],
     );
@@ -775,6 +835,16 @@ class S {
     return Intl.message(
       'Test',
       name: 'test',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
       desc: '',
       args: [],
     );

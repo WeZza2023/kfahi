@@ -25,6 +25,7 @@ class MainNews {
   String? sub;
   String? img;
   String? title;
+  String? link;
 
   MainNews({this.sub, this.img, this.title});
 
@@ -32,6 +33,7 @@ class MainNews {
     sub = json['sub'];
     img = json['img'];
     title = json['title'];
+    link = json['link'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class MainNews {
     data['sub'] = sub;
     data['img'] = img;
     data['title'] = title;
+    data['link'] = link;
     return data;
   }
 }

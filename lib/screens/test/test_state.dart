@@ -8,6 +8,8 @@ class NextQuestionState extends TestState {}
 
 class DecreaseTimeState extends TestState {}
 
-class ShowResultState extends TestState {}
+class ShowResultSuccessState extends TestState {}
+
+class ShowResultErrorState extends TestState {}
 
 class CheckAnswerState extends TestState {}

@@ -38,15 +38,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get: ^4.6.6
-  font_awesome_flutter: ^9.1.0
-  flutter_svg: ^2.0.10+1
   url_launcher: ^6.2.5
   google_fonts: ^6.2.0
+  font_awesome_flutter: ^9.1.0
   local_auth: ^2.2.0
-  intl_phone_number_input: ^0.7.4
   youtube_player_flutter: ^9.0.0
-  flutter_rating_bar: ^4.0.1
-  #  flutter_windowmanager: ^0.2.0
   flutter_email_sender: ^6.0.2
   firebase_core: ^2.31.0
   cloud_firestore: ^4.17.3
@@ -54,15 +50,13 @@ dependencies:
   firebase_messaging: ^14.9.2
   firebase_auth: ^4.19.5
   google_sign_in: ^6.2.1
-  flutter_marquee: ^2.0.1
-  marquee: ^2.2.3
-  fading_edge_scrollview: ^3.0.0
   flutter_native_splash: ^2.4.0
   shared_preferences: ^2.3.2
   flutter_advanced_avatar: ^1.5.0
   flutter_bloc: ^8.1.6
   lottie: ^3.1.2
   logger:
+  image_picker: ^1.0.8
 
 
 dev_dependencies:

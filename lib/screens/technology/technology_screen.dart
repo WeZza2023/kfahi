@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/technology/technology_cubit.dart';
 import 'package:kfahi/screens/technology/technology_state.dart';
-
 import '../../components/components.dart';
 import '../../constants/colors.dart';
 import '../../constants/custom_texts.dart';
@@ -11,8 +10,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_cubit.dart';
-import '../video/video_screen.dart';
 
 class TechnologyScreen extends StatelessWidget {
   const TechnologyScreen({super.key});
@@ -85,11 +82,12 @@ class TechnologyScreen extends StatelessWidget {
                           onTap: (index) {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
-                              cubit.getDoneLecs(docName: 'ICDL');
+                              cubit.getDoneLecs(
+                                  docName: 'ICDL', isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'IT');
+                              cubit.getDoneLecs(docName: 'IT', isCourse: true);
                             } else if (index == 2) {
-                              cubit.getDoneLecs(docName: 'TOT');
+                              cubit.getDoneLecs(docName: 'TOT', isCourse: true);
                             }
                           },
                           tabs: [
@@ -125,140 +123,23 @@ class TechnologyScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: ICDLVids[index],
-                                        videoNum: index,
-                                        course: 'ICDL',
-                                        courseVids: ICDLVids,
-                                        testQuestions: ICDLQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: ICDLVids.length,
+                              LecNumbers(
+                                testQuestions: ICDLQues,
+                                courseVids: ICDLVids,
+                                cubit: cubit,
+                                courseName: 'ICDL',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: ITVids[index],
-                                        videoNum: index,
-                                        course: 'IT',
-                                        courseVids: ITVids,
-                                        testQuestions: ITQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: ITVids.length,
+                              LecNumbers(
+                                testQuestions: ITQues,
+                                courseVids: ITVids,
+                                cubit: cubit,
+                                courseName: 'IT',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: TOTVids[index],
-                                        videoNum: index,
-                                        course: 'TOT',
-                                        courseVids: TOTVids,
-                                        testQuestions: TOTQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: TOTVids.length,
+                              LecNumbers(
+                                testQuestions: TOTQues,
+                                courseVids: TOTVids,
+                                cubit: cubit,
+                                courseName: 'TOT',
                               ),
                             ],
                           ).tP25.hP16,

@@ -9,3 +9,4 @@ class GetCourseDoneState extends MarketingState {}
 class GetCourseErrorState extends MarketingState {}
 
 class ChangeTabIndexState extends MarketingState {}
+

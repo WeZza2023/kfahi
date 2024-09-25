@@ -74,7 +74,7 @@ class SignInScreen extends StatelessWidget {
                                 AppSizes.getBaseScale(context) * 80)),
                       ),
                       child: Image.asset(
-                        "assets/images/logo & name.png",
+                        "assets/images/logo.x.png",
                         scale: AppSizes.getBaseScale(context) * 15,
                       ),
                     ),
@@ -127,7 +127,7 @@ class SignInScreen extends StatelessWidget {
                             ).p16,
                             state is SignInLoadingState ||
                                     state is AutoSignInLoadingState
-                                ? AppLoadingIndicator(context: context)
+                                ? AppLoadingIndicator(context: context).bP16
                                 : CustomButton(
                                     text: S.of(context).sign_in,
                                     onPressed: () {
@@ -185,8 +185,7 @@ class SignInScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    const url =
-                                        'https://www.youtube.com/@KFAHI';
+                                    const url = 'https://wa.me/+201025173298';
                                     await cubit.launchURL(url);
                                   },
                                   child: const FaIcon(

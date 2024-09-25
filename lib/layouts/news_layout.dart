@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/constants/custom_texts.dart';
+import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/home/home_cubit.dart';
 import 'package:kfahi/screens/home/home_state.dart';
 
@@ -22,10 +23,11 @@ class NewsLayout extends StatelessWidget {
                 title:
                     cubit.newsModel!.mainNews![index].title ?? 'لا يوجد عنوان',
                 sub: cubit.newsModel!.mainNews![index].sub ?? 'لا يوجد تفاصيل',
-                img: cubit.newsModel!.mainNews![index].img!,
+                img: cubit.newsModel!.mainNews![index].img,
+                link: cubit.newsModel!.mainNews![index].link,
               ),
               itemCount: cubit.newsModel!.mainNews!.length,
-            ),
+            ).p4,
     );
   }
 }

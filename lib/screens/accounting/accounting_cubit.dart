@@ -17,16 +17,27 @@ class AccountingCubit extends Cubit<AccountingState> {
     emit(ChangeTabIndexState());
   }
 
-  Future<void> getDoneLecs({required String docName}) async {
+  Future<void> getDoneLecs(
+      {required String docName,
+      bool isCourse = false,
+      String? collageName}) async {
     emit(GetCourseLoadingState());
     try {
       final db = FirebaseFirestore.instance;
       final userUid = FirebaseAuth.instance.currentUser!.uid;
-      final docRef = db
-          .collection('users')
-          .doc(userUid)
-          .collection("courses")
-          .doc(docName);
+      final docRef = isCourse == true
+          ? db
+              .collection('users')
+              .doc(userUid)
+              .collection("courses")
+              .doc(docName)
+          : db
+              .collection('users')
+              .doc(userUid)
+              .collection("collages")
+              .doc(collageName)
+              .collection('lectures')
+              .doc(docName);
       final snapshot = await docRef.get();
       if (snapshot.exists) {
         List<dynamic> done = snapshot.get('DoneLecs');

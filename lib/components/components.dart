@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/constants/custom_texts.dart';
 import 'package:kfahi/extention/extetion.dart';
+import 'package:kfahi/screens/home/home_state.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../constants/colors.dart';
 import '../constants/size.dart';
-import '../generated/l10n.dart';
+import '../screens/home/home_cubit.dart';
+import '../screens/video/video_cubit.dart';
+import '../screens/video/video_screen.dart';
 
 Widget CustomTextField({
   required hintText,
-  bool? isEnabled,
+  bool? isEnabled = true,
   TextInputType keyboardType = TextInputType.text,
   bool obscureText = false,
   required TextEditingController controller,
@@ -81,23 +86,23 @@ Widget CustomButton({
 }
 
 AppBar CustomAppBar({
-  required context,
   String? title,
   bool showBackButton = true,
   Function()? onTapBack,
-  bool showDrawer = false,
 }) {
   return AppBar(
     backgroundColor: kMainColor,
     automaticallyImplyLeading: false,
-    leading: showBackButton == true
-        ? IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: kMainColor,
-            ),
-            onPressed: onTapBack,
-          )
+    actions: showBackButton == true
+        ? [
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: kBackgroundColor,
+              ),
+              onPressed: onTapBack,
+            )
+          ]
         : null,
     centerTitle: true,
     title: Text(
@@ -121,54 +126,6 @@ SnackBar AppSnackBar({
         color: Colors.white,
         maxLines: 2,
         textAlign: TextAlign.center,
-      ),
-    ),
-  );
-}
-
-Widget MainItem({
-  required Function() function,
-  required List<Color> color,
-  required String title,
-}) {
-  return Container(
-    padding: const EdgeInsets.only(bottom: 20),
-    child: InkWell(
-      splashColor: kMainColor,
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(12),
-        topLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
-        topRight: Radius.circular(60),
-      ),
-      onTap: function,
-      child: Container(
-        width: 180,
-        height: 150,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: color,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          border: Border.all(color: kMainColor),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(12),
-            topLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
-            topRight: Radius.circular(60),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.black54,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
       ),
     ),
   );
@@ -280,7 +237,7 @@ Widget AppLoadingIndicator({required BuildContext context}) => FittedBox(
         strokeWidth: 2,
         strokeAlign: -5 * AppSizes.getBaseScale(context),
         strokeCap: StrokeCap.round,
-      ).bP25,
+      ),
     );
 
 Widget CommingSoon({required BuildContext context}) {
@@ -297,8 +254,9 @@ Widget CommingSoon({required BuildContext context}) {
 Widget NewsExpansionTile({
   required BuildContext context,
   required String title,
-  required String img,
+  String? img,
   required String sub,
+  String? link,
 }) =>
     FittedBox(
       child: Container(
@@ -320,54 +278,269 @@ Widget NewsExpansionTile({
                 BorderRadius.circular(AppSizes.getBaseScale(context) * 10),
           ),
           dense: true,
-          leading: Image.network(
-            fit: BoxFit.contain,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: AppLoadingIndicator(context: context),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) => SizedBox(
-              height: AppSizes.getBaseScale(context) * 50,
-              width: AppSizes.getBaseScale(context) * 50,
-              child: const Icon(Icons.error_outline_rounded, size: 20),
-            ),
-            img,
-          ).hP16,
+          leading: img != null && img != ''
+              ? Image.network(
+                  fit: BoxFit.contain,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: AppLoadingIndicator(context: context),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => SizedBox(
+                    height: AppSizes.getBaseScale(context) * 50,
+                    width: AppSizes.getBaseScale(context) * 50,
+                    child: const Icon(Icons.error_outline_rounded, size: 20),
+                  ),
+                  img,
+                ).hP16
+              : null,
           childrenPadding: EdgeInsets.all(AppSizes.getBaseScale(context) * 15),
           children: [
-            Image.network(
-              fit: BoxFit.contain,
-              height: AppSizes.getBaseScale(context) * 200,
-              width: AppSizes.getBaseScale(context) * 250,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: AppLoadingIndicator(context: context),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) => SizedBox(
-                height: AppSizes.getBaseScale(context) * 50,
-                width: AppSizes.getBaseScale(context) * 50,
-                child: const Icon(Icons.error_outline_rounded, size: 20),
-              ),
-              img,
-            ).hP16.hP25,
+            img != null && img != ''
+                ? Image.network(
+                    fit: BoxFit.contain,
+                    height: AppSizes.getBaseScale(context) * 200,
+                    width: AppSizes.getBaseScale(context) * 250,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: AppLoadingIndicator(context: context),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) => SizedBox(
+                      height: AppSizes.getBaseScale(context) * 50,
+                      width: AppSizes.getBaseScale(context) * 50,
+                      child: const Icon(Icons.error_outline_rounded, size: 20),
+                    ),
+                    img,
+                  ).hP16.hP25
+                : const SizedBox(),
             BodyLargeText(
               sub,
               maxLines: 20,
               textAlign: TextAlign.center,
               weight: FontWeight.normal,
             ),
+            if (link != null && link != '')
+              InkWell(
+                onTap: () {
+                  launchUrl(Uri.parse(link));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.link_rounded,
+                      size: 20,
+                      color: Colors.blue,
+                    ).hP8,
+                    const BodyMediumText(
+                      'اللينك المرفق.',
+                      maxLines: 20,
+                      textAlign: TextAlign.center,
+                      weight: FontWeight.normal,
+                    ),
+                  ],
+                ),
+              ).tP16,
           ],
         ).p16,
+      ).bP25,
+    );
+
+Widget InitiativesExpansionTile({
+  required BuildContext context,
+  required String title,
+  required String sub,
+  String? task,
+  String? videoId,
+  YoutubePlayerController? controller,
+  required Function(bool) onExpansionChanged,
+}) =>
+    FittedBox(
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: kMainColor,
+            ),
+            borderRadius:
+                BorderRadius.circular(AppSizes.getBaseScale(context) * 30),
+            color: Colors.white),
+        width: AppSizes.getScreenWidth(context),
+        child: ExpansionTile(
+          key: Key(title),
+          onExpansionChanged: onExpansionChanged,
+          title: const SizedBox(),
+          tilePadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(AppSizes.getBaseScale(context) * 10),
+          ),
+          dense: true,
+          leading: BodySmallText(
+            title,
+            weight: FontWeight.bold,
+          ).hP8,
+          childrenPadding: EdgeInsets.all(AppSizes.getBaseScale(context) * 15),
+          children: [
+            controller == null
+                ? AppLoadingIndicator(context: context)
+                : YoutubePlayerBuilder(
+                    builder: (p0, p1) => Column(
+                      children: [
+                        p1,
+                      ],
+                    ),
+                    player: YoutubePlayer(
+                      controller: controller,
+                      showVideoProgressIndicator: true,
+                      bottomActions: [],
+                      progressIndicatorColor: kActiveColor,
+                    ),
+                  ),
+            BodyLargeText(
+              sub,
+              maxLines: 20,
+              textAlign: TextAlign.center,
+              weight: FontWeight.normal,
+            ).tP25,
+            if (task != null && task != '')
+              BodyMediumText(
+                task,
+                maxLines: 20,
+                textAlign: TextAlign.center,
+                weight: FontWeight.normal,
+              ).tP8,
+            InkWell(
+              onTap: () {
+                launchUrl(Uri.parse('https://wa.me/+201025173298'));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.link_rounded,
+                    size: 20,
+                    color: Colors.blue,
+                  ).hP8,
+                  const BodyMediumText(
+                    'تسليم التاسك.',
+                    maxLines: 20,
+                    textAlign: TextAlign.center,
+                    weight: FontWeight.normal,
+                  ),
+                ],
+              ),
+            ).tP16,
+          ],
+        ).p16,
+      ).bP25,
+    );
+
+Widget NotificationExpansionTile({
+  required BuildContext context,
+  required String title,
+  required String sub,
+  String? link,
+}) =>
+    FittedBox(
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: kMainColor,
+            ),
+            borderRadius:
+                BorderRadius.circular(AppSizes.getBaseScale(context) * 30),
+            color: Colors.white),
+        width: AppSizes.getScreenWidth(context),
+        child: ExpansionTile(
+          title: const SizedBox(),
+          leading: BodySmallText(
+            title,
+          ).hP8,
+          tilePadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(AppSizes.getBaseScale(context) * 10),
+          ),
+          dense: true,
+          childrenPadding: EdgeInsets.all(AppSizes.getBaseScale(context) * 15),
+          children: [
+            BodyMediumText(
+              sub,
+              maxLines: 20,
+              textAlign: TextAlign.center,
+              weight: FontWeight.normal,
+            ),
+            if (link != null && link != '')
+              InkWell(
+                onTap: () {
+                  launchUrl(Uri.parse(link));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.link_rounded,
+                      size: 20,
+                      color: Colors.blue,
+                    ).hP16,
+                    const BodyMediumText(
+                      'اللينك المرفق.',
+                      maxLines: 20,
+                      textAlign: TextAlign.center,
+                      weight: FontWeight.normal,
+                    ),
+                  ],
+                ),
+              ).tP16,
+          ],
+        ).p16,
+      ).bP25,
+    );
+
+Widget CustomExpansionTile({
+  required BuildContext context,
+  required String title,
+  required List<Widget> children,
+  required Function(bool) onExpansionChanged,
+}) =>
+    FittedBox(
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: kMainColor,
+            ),
+            borderRadius:
+                BorderRadius.circular(AppSizes.getBaseScale(context) * 30),
+            color: Colors.white),
+        width: AppSizes.getScreenWidth(context),
+        child: ExpansionTile(
+                onExpansionChanged: onExpansionChanged,
+                title: const SizedBox(),
+                leading: BodySmallText(
+                  title,
+                ).hP8,
+                tilePadding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      AppSizes.getBaseScale(context) * 10),
+                ),
+                dense: true,
+                childrenPadding:
+                    EdgeInsets.all(AppSizes.getBaseScale(context) * 15),
+                children: children)
+            .p16,
       ).bP25,
     );
 
 Widget AppDrawer({
   required BuildContext context,
   required Widget children,
+  required String name,
+  required String email,
+  String? img,
 }) =>
     Drawer(
         backgroundColor: kBackgroundColor,
@@ -379,21 +552,60 @@ Widget AppDrawer({
           )),
         ),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AdvancedAvatar(
-                size: AppSizes.getBaseScale(context) * 50,
-                decoration: const BoxDecoration(
-                  color: Colors.black12,
-                  shape: BoxShape.circle,
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) => Column(
+              children: [
+                AdvancedAvatar(
+                  image: state is UpdateProfileLoadingState
+                      ? null
+                      : NetworkImage(img ?? ''),
+                  size: AppSizes.getBaseScale(context) * 50,
+                  children: [
+                    state is UpdateProfileLoadingState
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: () {
+                              BlocProvider.of<HomeCubit>(context)
+                                  .updateProfile();
+                            },
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Color(0xff707184),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.edit,
+                                  size: AppSizes.getBaseScale(context) * 12,
+                                  color: kBackgroundColor,
+                                ).p(AppSizes.getBaseScale(context) * 4)),
+                          )
+                  ],
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                    shape: BoxShape.circle,
+                  ),
+                  child: state is UpdateProfileLoadingState
+                      ? AppLoadingIndicator(context: context)
+                      : Icon(
+                          Icons.person_rounded,
+                          size: AppSizes.getBaseScale(context) * 30,
+                        ),
+                ).tp(AppSizes.getBaseScale(context) * 25),
+                BodySmallText(
+                  name,
+                  weight: FontWeight.bold,
+                  maxLines: 2,
+                ).tP16,
+                BodyExtraSmallText(
+                  email,
+                  maxLines: 2,
+                ).vP8,
+                Divider(
+                  color: kActiveColor.withOpacity(0.3),
                 ),
-                child: Icon(
-                  Icons.person_rounded,
-                  size: AppSizes.getBaseScale(context) * 30,
-                ),
-              ).vP25,
-              children,
-            ],
+                children.vP25,
+              ],
+            ),
           ),
         ));
 
@@ -405,4 +617,108 @@ Widget DrawerItem(
       leading: Icon(icon),
       title: Center(child: BodySmallText(title)),
       onTap: onTap,
+    );
+
+Widget LecNumbers({
+  required List courseVids,
+  required List testQuestions,
+  required var cubit,
+  required String courseName,
+}) =>
+    GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 6,
+      ),
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            InkWell(
+              onTap: () async {
+                await BlocProvider.of<VideoCubit>(context).getVideoDetails(
+                  videoId: courseVids[index],
+                  videoNum: index,
+                  course: courseName,
+                  courseVids: courseVids,
+                  testQuestions: testQuestions,
+                );
+
+                await BlocProvider.of<VideoCubit>(context)
+                    .initController(context: context);
+
+                Navigator.pushNamed(context, VideoScreen.id);
+              },
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: cubit.doneLecs.contains(index) == true
+                      ? Colors.green
+                      : Colors.blueGrey,
+                ),
+                child: Center(
+                    child: BodySmallText(
+                  (index + 1).toString(),
+                  weight: FontWeight.bold,
+                )).p8,
+              ),
+            ),
+          ],
+        );
+      },
+      padding: const EdgeInsets.all(15),
+      itemCount: courseVids.length,
+    );
+
+Widget LevelsGrid({
+  required BuildContext context,
+  required List courseVids,
+  required var cubit,
+  required String courseName,
+}) =>
+    Column(
+      children: [
+        SizedBox(
+          height: AppSizes.getScreenHeight(context) * 0.45,
+          width: AppSizes.getScreenWidth(context),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 6,
+            ),
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () async {
+                  await BlocProvider.of<VideoCubit>(context).getVideoDetails(
+                    videoId: courseVids[index],
+                    videoNum: index,
+                    course: courseName,
+                    courseVids: courseVids,
+                    testQuestions: [],
+                  );
+
+                  await BlocProvider.of<VideoCubit>(context)
+                      .initController(context: context);
+
+                  Navigator.pushNamed(context, VideoScreen.id);
+                },
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: cubit.doneLecs.contains(index) == true
+                        ? Colors.green
+                        : Colors.blueGrey,
+                  ),
+                  child: Center(
+                      child: BodySmallText(
+                    (index + 1).toString(),
+                    weight: FontWeight.bold,
+                  )),
+                ),
+              ).p8;
+            },
+            padding: const EdgeInsets.all(15),
+            itemCount: courseVids.length,
+          ),
+        ),
+      ],
     );

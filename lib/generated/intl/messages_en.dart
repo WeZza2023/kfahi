@@ -34,8 +34,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "canva": MessageLookupByLibrary.simpleMessage("Canva"),
         "colleges": MessageLookupByLibrary.simpleMessage("Colleges"),
         "commerce": MessageLookupByLibrary.simpleMessage("Commerce"),
+        "contact_support":
+            MessageLookupByLibrary.simpleMessage("Contact support"),
         "content_writing":
             MessageLookupByLibrary.simpleMessage("Content Writing"),
+        "copy_code": MessageLookupByLibrary.simpleMessage("Copy code"),
+        "copy_code_and_contact_support": MessageLookupByLibrary.simpleMessage(
+            "Copy code and contact support"),
         "cost_accounting":
             MessageLookupByLibrary.simpleMessage("Cost accounting"),
         "courses": MessageLookupByLibrary.simpleMessage("Courses"),
@@ -79,6 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("News"),
         "no_courses_available": MessageLookupByLibrary.simpleMessage(
             "Sorry no courses available for now in this field !"),
+        "no_initiatives_available":
+            MessageLookupByLibrary.simpleMessage("No initiatives available"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "nursing": MessageLookupByLibrary.simpleMessage("Nursing"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pharmacy": MessageLookupByLibrary.simpleMessage("Pharmacy"),
@@ -92,6 +100,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please enter your password"),
         "please_enter_your_phone":
             MessageLookupByLibrary.simpleMessage("Please enter your phone"),
+        "please_select_profile_picture": MessageLookupByLibrary.simpleMessage(
+            "Please select profile picture"),
         "programming": MessageLookupByLibrary.simpleMessage("Programming"),
         "remaining_time":
             MessageLookupByLibrary.simpleMessage("Remaining time"),
@@ -119,6 +129,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "weak_password":
             MessageLookupByLibrary.simpleMessage("Password is too weak"),
         "wordpress": MessageLookupByLibrary.simpleMessage("Wordpress"),
+        "your_acc_has_been_created_successfully":
+            MessageLookupByLibrary.simpleMessage(
+                "Your account has been created successfully"),
         "your_account_is_not_active": MessageLookupByLibrary.simpleMessage(
             "Your account is not active. Please contact the admin")
       };

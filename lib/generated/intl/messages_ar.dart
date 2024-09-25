@@ -34,8 +34,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "canva": MessageLookupByLibrary.simpleMessage("كانفا"),
         "colleges": MessageLookupByLibrary.simpleMessage("الكليات"),
         "commerce": MessageLookupByLibrary.simpleMessage("التجارة"),
+        "contact_support":
+            MessageLookupByLibrary.simpleMessage("تواصل مع الدعم"),
         "content_writing":
             MessageLookupByLibrary.simpleMessage("كتابة المحتوى"),
+        "copy_code": MessageLookupByLibrary.simpleMessage("نسخ الكود"),
+        "copy_code_and_contact_support": MessageLookupByLibrary.simpleMessage(
+            "قم بنسخ كود العضوية الخاص بك ثم تواصل مع الدعم لتفعيل حسابك"),
         "cost_accounting":
             MessageLookupByLibrary.simpleMessage("محاسبة التكاليف"),
         "courses": MessageLookupByLibrary.simpleMessage("الدورات"),
@@ -80,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "news": MessageLookupByLibrary.simpleMessage("الاخبار"),
         "no_courses_available": MessageLookupByLibrary.simpleMessage(
             "عفواً، لا يوجد دورات متوفرة في الوقت الحالي في هذا المجال !"),
+        "no_initiatives_available": MessageLookupByLibrary.simpleMessage(
+            "عفواً، لا يوجد مبادرات متوفرة في الوقت الحالي !"),
+        "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
         "nursing": MessageLookupByLibrary.simpleMessage("التمريض"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "pharmacy": MessageLookupByLibrary.simpleMessage("الصيدلة"),
@@ -93,6 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("برجاء ادخال كلمة المرور"),
         "please_enter_your_phone":
             MessageLookupByLibrary.simpleMessage("برجاء ادخال الهاتف"),
+        "please_select_profile_picture": MessageLookupByLibrary.simpleMessage(
+            "برجاء تحديد صورة الملف الشخصي"),
         "programming": MessageLookupByLibrary.simpleMessage("البرمجة"),
         "remaining_time": MessageLookupByLibrary.simpleMessage("الوقت المتبقي"),
         "science": MessageLookupByLibrary.simpleMessage("العلوم"),
@@ -119,6 +129,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "weak_password":
             MessageLookupByLibrary.simpleMessage("كلمة المرور ضعيفة"),
         "wordpress": MessageLookupByLibrary.simpleMessage("ووردبريس"),
+        "your_acc_has_been_created_successfully":
+            MessageLookupByLibrary.simpleMessage("تم انشاء حسابك بنجاح"),
         "your_account_is_not_active": MessageLookupByLibrary.simpleMessage(
             "حسابك غير نشط. الرجاء الاتصال بالمسؤول")
       };

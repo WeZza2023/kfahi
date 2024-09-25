@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/extention/extetion.dart';
-import 'package:kfahi/screens/video/video_cubit.dart';
 import '../../components/components.dart';
 import '../../constants/colors.dart';
 import '../../constants/custom_texts.dart';
@@ -9,7 +8,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_screen.dart';
 import 'programming_cubit.dart';
 import 'programming_state.dart';
 
@@ -40,7 +38,7 @@ class ProgrammingScreen extends StatelessWidget {
               ],
             ),
             DefaultTabController(
-              length: 3,
+              length: 18,
               child: Column(
                 children: [
                   Container(
@@ -84,25 +82,135 @@ class ProgrammingScreen extends StatelessWidget {
                           onTap: (index) {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
-                              cubit.getDoneLecs(docName: 'Ethicalhacking');
+                              cubit.getDoneLecs(
+                                  docName: 'Before programming',
+                                  isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'Flutter');
+                              cubit.getDoneLecs(
+                                  docName: 'Vs Code', isCourse: true);
                             } else if (index == 2) {
-                              cubit.getDoneLecs(docName: 'WordPress');
+                              cubit.getDoneLecs(
+                                  docName: 'Android studio', isCourse: true);
+                            } else if (index == 3) {
+                              cubit.getDoneLecs(
+                                  docName: 'Ethicalhacking', isCourse: true);
+                            } else if (index == 4) {
+                              cubit.getDoneLecs(
+                                  docName: 'Dart', isCourse: true);
+                            } else if (index == 5) {
+                              cubit.getDoneLecs(
+                                  docName: 'Flutter', isCourse: true);
+                            } else if (index == 6) {
+                              cubit.getDoneLecs(
+                                  docName: 'WordPress', isCourse: true);
+                            } else if (index == 7) {
+                              cubit.getDoneLecs(
+                                  docName: 'Front_end', isCourse: true);
+                            } else if (index == 8) {
+                              cubit.getDoneLecs(
+                                  docName: 'Back_end', isCourse: true);
+                            } else if (index == 9) {
+                              cubit.getDoneLecs(
+                                  docName: 'Problems Solving with c++',
+                                  isCourse: true);
+                            } else if (index == 10) {
+                              cubit.getDoneLecs(
+                                  docName: 'PHP Bootcamp', isCourse: true);
+                            } else if (index == 11) {
+                              cubit.getDoneLecs(
+                                  docName: 'JavaScript', isCourse: true);
+                            } else if (index == 12) {
+                              cubit.getDoneLecs(
+                                  docName: 'HTML', isCourse: true);
+                            } else if (index == 13) {
+                              cubit.getDoneLecs(docName: 'CSS', isCourse: true);
+                            } else if (index == 14) {
+                              cubit.getDoneLecs(
+                                  docName: 'Python', isCourse: true);
+                            } else if (index == 15) {
+                              cubit.getDoneLecs(
+                                  docName: 'Github & Git', isCourse: true);
+                            } else if (index == 16) {
+                              cubit.getDoneLecs(
+                                  docName: 'eCommerce', isCourse: true);
+                            } else if (index == 17) {
+                              cubit.getDoneLecs(
+                                  docName: 'MySQL', isCourse: true);
                             }
                           },
                           tabs: [
+                            const BodySmallText(
+                              'ما قبل البرمجة',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'الفاجول استديو',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'اندرويد استديو',
+                              color: kBackgroundColor,
+                            ).p4,
                             BodySmallText(
                               S.of(context).ethical_hacking,
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'لغة دارت',
                               color: kBackgroundColor,
                             ).p4,
                             BodySmallText(
                               S.of(context).flutter,
                               color: kBackgroundColor,
                             ).p4,
-                            BodySmallText(S.of(context).wordpress,
-                                    color: kBackgroundColor)
-                                .p4,
+                            BodySmallText(
+                              S.of(context).wordpress,
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'فرونت اند',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'باك اند',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              '++Problems Solving with c',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'PHP Bootcamp',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'جافا سكريبت',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'HTML',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'CSS',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'بايثون',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'جيت هب و جيت',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'eCommerce',
+                              color: kBackgroundColor,
+                            ).p4,
+                            const BodySmallText(
+                              'MySQL',
+                              color: kBackgroundColor,
+                            ).p4,
                           ],
                         ),
                       ],
@@ -124,140 +232,113 @@ class ProgrammingScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: EthicalHackingVids[index],
-                                        videoNum: index,
-                                        course: 'Ethicalhacking',
-                                        courseVids: EthicalHackingVids,
-                                        testQuestions: EthicalHackingQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: EthicalHackingVids.length,
+                              LecNumbers(
+                                testQuestions: [],
+                                courseVids: BeforeProgrammingVids,
+                                cubit: cubit,
+                                courseName: 'Before programming',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: FlutterVids[index],
-                                        videoNum: index,
-                                        course: 'Flutter',
-                                        courseVids: FlutterVids,
-                                        testQuestions: FlutterQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: FlutterVids.length,
+                              LecNumbers(
+                                testQuestions: vscodeQues,
+                                courseVids: VsCodeVids,
+                                cubit: cubit,
+                                courseName: 'Vs Code',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: WordPrsVids[index],
-                                        videoNum: index,
-                                        course: 'WordPress',
-                                        courseVids: WordPrsVids,
-                                        testQuestions: WordPrsQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: WordPrsVids.length,
+                              LecNumbers(
+                                testQuestions: AndroidstudioQues,
+                                courseVids: AndroidStudioVids,
+                                cubit: cubit,
+                                courseName: 'Android studio',
+                              ),
+                              LecNumbers(
+                                testQuestions: EthicalHackingQues,
+                                courseVids: EthicalHackingVids,
+                                cubit: cubit,
+                                courseName: 'Ethicalhacking',
+                              ),
+                              LecNumbers(
+                                testQuestions: DartQues,
+                                courseVids: DartVids,
+                                cubit: cubit,
+                                courseName: 'Dart',
+                              ),
+                              LecNumbers(
+                                testQuestions: FlutterQues,
+                                courseVids: FlutterVids,
+                                cubit: cubit,
+                                courseName: 'Flutter',
+                              ),
+                              LecNumbers(
+                                testQuestions: WordPrsQues,
+                                courseVids: WordPrsVids,
+                                cubit: cubit,
+                                courseName: 'WordPress',
+                              ),
+                              LecNumbers(
+                                testQuestions: FrontEndQues,
+                                courseVids: FrontEndVids,
+                                cubit: cubit,
+                                courseName: 'Front_end',
+                              ),
+                              LecNumbers(
+                                testQuestions: backendQues,
+                                courseVids: BackEndVids,
+                                cubit: cubit,
+                                courseName: 'Back_end',
+                              ),
+                              LecNumbers(
+                                testQuestions: ProblemsSolvingWithcQues,
+                                courseVids: ProblemsSolvingWithcVids,
+                                cubit: cubit,
+                                courseName: 'Problems Solving with c++',
+                              ),
+                              LecNumbers(
+                                testQuestions: PHPBootcampQues,
+                                courseVids: PHPBootcampVids,
+                                cubit: cubit,
+                                courseName: 'PHP Bootcamp',
+                              ),
+                              LecNumbers(
+                                testQuestions: JavaScriptQues,
+                                courseVids: JavaScriptVids,
+                                cubit: cubit,
+                                courseName: 'JavaScript',
+                              ),
+                              LecNumbers(
+                                testQuestions: HTMLQues,
+                                courseVids: HTMLVids,
+                                cubit: cubit,
+                                courseName: 'HTML',
+                              ),
+                              LecNumbers(
+                                testQuestions: cssQues,
+                                courseVids: cssVids,
+                                cubit: cubit,
+                                courseName: 'CSS',
+                              ),
+                              LecNumbers(
+                                testQuestions: PythonQues,
+                                courseVids: PythonVids,
+                                cubit: cubit,
+                                courseName: 'Python',
+                              ),
+                              LecNumbers(
+                                testQuestions: GithubGitQues,
+                                courseVids: GithubGitVids,
+                                cubit: cubit,
+                                courseName: 'Github & Git',
+                              ),
+                              LecNumbers(
+                                testQuestions: eCommerceQues,
+                                courseVids: eCommerceVids,
+                                cubit: cubit,
+                                courseName: 'eCommerce',
+                              ),
+                              LecNumbers(
+                                testQuestions: MySQLQues,
+                                courseVids: MySQLVids,
+                                cubit: cubit,
+                                courseName: 'MySQL',
                               ),
                             ],
                           ).tP25.hP16,

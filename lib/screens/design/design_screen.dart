@@ -11,8 +11,6 @@ import '../../constants/lectures.dart';
 import '../../constants/questions.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
-import '../video/video_cubit.dart';
-import '../video/video_screen.dart';
 
 class DesignScreen extends StatelessWidget {
   const DesignScreen({super.key});
@@ -85,11 +83,14 @@ class DesignScreen extends StatelessWidget {
                           onTap: (index) {
                             cubit.changeTabIndex(currentTab: index);
                             if (index == 0) {
-                              cubit.getDoneLecs(docName: 'Canva');
+                              cubit.getDoneLecs(
+                                  docName: 'Canva', isCourse: true);
                             } else if (index == 1) {
-                              cubit.getDoneLecs(docName: 'UI UX');
+                              cubit.getDoneLecs(
+                                  docName: 'UI UX', isCourse: true);
                             } else if (index == 2) {
-                              cubit.getDoneLecs(docName: 'PhotoShop');
+                              cubit.getDoneLecs(
+                                  docName: 'PhotoShop', isCourse: true);
                             }
                           },
                           tabs: [
@@ -125,140 +126,23 @@ class DesignScreen extends StatelessWidget {
                         : TabBarView(
                             physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: CanvaVids[index],
-                                        videoNum: index,
-                                        course: 'Canva',
-                                        courseVids: CanvaVids,
-                                        testQuestions: CanvaQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: CanvaVids.length,
+                              LecNumbers(
+                                testQuestions: CanvaQues,
+                                courseVids: CanvaVids,
+                                cubit: cubit,
+                                courseName: 'Canva',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: UIUXVids[index],
-                                        videoNum: index,
-                                        course: 'UI UX',
-                                        courseVids: UIUXVids,
-                                        testQuestions: UIUXQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: UIUXVids.length,
+                              LecNumbers(
+                                testQuestions: UIUXQues,
+                                courseVids: UIUXVids,
+                                cubit: cubit,
+                                courseName: 'UI UX',
                               ),
-                              GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                ),
-                                itemBuilder: (context, index) => Padding(
-                                  padding: EdgeInsets.all(
-                                      AppSizes.getBaseScale(context) * 8.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .getVideoDetails(
-                                        videoId: PhotoShopVids[index],
-                                        videoNum: index,
-                                        course: 'PhotoShop',
-                                        courseVids: PhotoShopVids,
-                                        testQuestions: PhotoShopQues,
-                                      );
-
-                                      await BlocProvider.of<VideoCubit>(context)
-                                          .initController(context: context);
-
-                                      Navigator.pushNamed(
-                                          context, VideoScreen.id);
-                                    },
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: cubit.doneLecs.contains(index) ==
-                                                true
-                                            ? Colors.green
-                                            : Colors.blueGrey,
-                                      ),
-                                      child: Center(
-                                          child: BodySmallText(
-                                        (index + 1).toString(),
-                                        weight: FontWeight.bold,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                itemCount: PhotoShopVids.length,
+                              LecNumbers(
+                                testQuestions: PhotoShopQues,
+                                courseVids: PhotoShopVids,
+                                cubit: cubit,
+                                courseName: 'PhotoShop',
                               ),
                             ],
                           ).tP25.hP16,

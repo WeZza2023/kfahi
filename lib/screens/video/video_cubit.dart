@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kfahi/screens/test/test_cubit.dart';
-import 'package:kfahi/screens/test/test_screen.dart';
+import 'package:kfahi/components/components.dart';
+import 'package:kfahi/constants/colors.dart';
+import 'package:kfahi/constants/custom_texts.dart';
+import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/video/video_screen.dart';
 import 'package:kfahi/screens/video/video_state.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoCubit extends Cubit<VideoState> {
@@ -17,6 +20,8 @@ class VideoCubit extends Cubit<VideoState> {
   String course = '';
   List courseVids = [];
   List testQuestions = [];
+  bool isCourse = true;
+  String collageName = '';
 
   Future<void> getVideoDetails({
     required String videoId,
@@ -62,8 +67,15 @@ class VideoCubit extends Cubit<VideoState> {
   Future<void> _playNextVid({required BuildContext context}) async {
     final db = FirebaseFirestore.instance;
     final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final docRef =
-        db.collection('users').doc(userUid).collection("courses").doc(course);
+    final docRef = isCourse == true
+        ? db.collection('users').doc(userUid).collection("courses").doc(course)
+        : db
+            .collection('users')
+            .doc(userUid)
+            .collection("collages")
+            .doc(collageName)
+            .collection('lectures')
+            .doc(course);
 
     final snapshot = await docRef.get();
 
@@ -82,13 +94,45 @@ class VideoCubit extends Cubit<VideoState> {
         Navigator.pushReplacementNamed(context, VideoScreen.id);
         emit(NextVidState());
       } else {
-        await BlocProvider.of<TestCubit>(context)
-            .getRandomQuestions(count: 20, questions: testQuestions);
-        await BlocProvider.of<TestCubit>(context).startNextQuestion();
-        Navigator.pushReplacementNamed(context, TestScreen.id);
+        // if (testQuestions.isNotEmpty) {
+        //   await BlocProvider.of<TestCubit>(context)
+        //       .getRandomQuestions(count: 20, questions: testQuestions);
+        //   await BlocProvider.of<TestCubit>(context)
+        //       .startNextQuestion(context: context);
+        //   Navigator.pushReplacementNamed(context, TestScreen.id);
+        Navigator.pop(context);
+        if (course != 'English L1' &&
+            course != 'English L2' &&
+            course != 'English L3' &&
+            course != 'English L4' &&
+            course != 'English L5' &&
+            course != 'English L6' &&
+            course != 'English L7' &&
+            course != 'English L8' &&
+            course != 'English L9' &&
+            course != 'English L10' &&
+            course != '') {
+          showDialog(
+            context: context,
+            builder: (context) => AppPopupDialog(body: [
+              const BodySmallText(
+                'لقد قمت بانهاء هذا الكورس, يرجى الانتقال الى الدعم لاداء الاختبار',
+                maxLines: 4,
+                textAlign: TextAlign.center,
+              ).bP8,
+              CustomButton(
+                  text: 'تيليجرام',
+                  onPressed: () {
+                    launchUrlString('https://bit.ly/3Y8c30Q');
+                  },
+                  color: kMainColor)
+            ], title: 'احسنت'),
+          );
+        }
         emit(OpenTestState());
-        // pushReplacement(context,
-        //     MaterialPageRoute(builder: (context) => Ethicalhackingpagetest()));
+        // } else if (testQuestions.isEmpty) {
+        //   Navigator.pop(context);
+        // }
       }
     }
   }
@@ -97,8 +141,19 @@ class VideoCubit extends Cubit<VideoState> {
     try {
       final db = FirebaseFirestore.instance;
       final userUid = FirebaseAuth.instance.currentUser!.uid;
-      final docRef =
-          db.collection('users').doc(userUid).collection("courses").doc(course);
+      final docRef = isCourse == true
+          ? db
+              .collection('users')
+              .doc(userUid)
+              .collection("courses")
+              .doc(course)
+          : db
+              .collection('users')
+              .doc(userUid)
+              .collection("collages")
+              .doc(collageName)
+              .collection('lectures')
+              .doc(course);
 
       final snapshot = await docRef.get();
 

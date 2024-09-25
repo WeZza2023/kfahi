@@ -1,21 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/constants/custom_texts.dart';
 import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/layouts/courses_layout.dart';
 import 'package:kfahi/screens/home/home_cubit.dart';
+import 'package:kfahi/screens/notifications/notifications_screen.dart';
 import 'package:kfahi/screens/sing_up/sign_up_cubit.dart';
+import 'package:kfahi/screens/test/test_cubit.dart';
+import 'package:kfahi/screens/video/video_cubit.dart';
 import '../../components/components.dart';
 import '../../constants/colors.dart';
 import '../../constants/size.dart';
 import '../../generated/l10n.dart';
 import '../../layouts/colleges_layout.dart';
+import '../../layouts/initiatives_layout.dart';
 import '../../layouts/my_points_layout.dart';
 import '../../layouts/news_layout.dart';
 import '../../shared_prefs/network.dart';
-import '../sign_in/sign_in_cubit.dart';
 import '../sign_in/sign_in_screen.dart';
 import 'home_state.dart';
 
@@ -47,9 +49,26 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         drawer: AppDrawer(
+          email: cubit.userModel == null
+              ? ''
+              : cubit.userModel!.email ??
+                  FirebaseAuth.instance.currentUser?.email ??
+                  '',
+          img: cubit.userModel?.profile,
           context: context,
+          name: cubit.userModel == null ? '' : cubit.userModel?.first ?? '',
           children: Column(
             children: [
+              DrawerItem(
+                title: S.of(context).notifications,
+                icon: Icons.notifications_active_outlined,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    NotificationsScreen.id,
+                  );
+                },
+              ),
               DrawerItem(
                 title: S.of(context).sign_out,
                 icon: Icons.logout_rounded,
@@ -93,8 +112,10 @@ class HomeScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: kMainColor,
                       borderRadius: BorderRadiusDirectional.only(
-                          bottomStart: Radius.circular(
-                              AppSizes.getBaseScale(context) * 80)),
+                        bottomStart: Radius.circular(
+                          AppSizes.getBaseScale(context) * 80,
+                        ),
+                      ),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -127,7 +148,19 @@ class HomeScreen extends StatelessWidget {
                         ),
                         AppTapBar(
                           context: context,
-                          onTap: (index) {},
+                          onTap: (index) {
+                            if (index == 0) {
+                              BlocProvider.of<VideoCubit>(context).isCourse =
+                                  true;
+                              BlocProvider.of<TestCubit>(context).isCourse =
+                                  true;
+                            } else if (index == 1) {
+                              BlocProvider.of<VideoCubit>(context).isCourse =
+                                  false;
+                              BlocProvider.of<TestCubit>(context).isCourse =
+                                  false;
+                            }
+                          },
                           tabs: [
                             BodySmallText(
                               S.of(context).courses,
@@ -169,8 +202,13 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         const CoursesLayout(),
                         const CollegesLayout(),
-                        CommingSoon(context: context),
-                        CommingSoon(context: context),
+                        InkWell(
+                          onTap: () {
+                            cubit.getInitiatives();
+                          },
+                          child: CommingSoon(context: context),
+                        ),
+                        InitiativesLayout(),
                         state is GetNewsLoadingState
                             ? AppLoadingIndicator(context: context)
                             : const NewsLayout(),
@@ -180,7 +218,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

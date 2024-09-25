@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/components/components.dart';
 import 'package:kfahi/constants/colors.dart';
-import 'package:kfahi/constants/custom_texts.dart';
 import 'package:kfahi/screens/video/video_cubit.dart';
 import 'package:kfahi/screens/video/video_state.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -35,7 +34,6 @@ class _VideoScreenState extends State<VideoScreen> {
     return BlocBuilder<VideoCubit, VideoState>(
       builder: (context, state) => Scaffold(
         appBar: CustomAppBar(
-            context: context,
             title: 'المحاضره ${(cubit.videoNum + 1).toString()}',
             showBackButton: true,
             onTapBack: () {
@@ -57,6 +55,5 @@ class _VideoScreenState extends State<VideoScreen> {
         ),
       ),
     );
-    ;
   }
 }

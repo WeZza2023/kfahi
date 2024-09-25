@@ -7,7 +7,6 @@ import 'package:kfahi/constants/size.dart';
 import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/test/test_cubit.dart';
 import 'package:kfahi/screens/test/test_state.dart';
-import 'package:kfahi/screens/video/video_cubit.dart';
 
 import '../../generated/l10n.dart';
 
@@ -21,10 +20,7 @@ class TestScreen extends StatelessWidget {
     var cubit = BlocProvider.of<TestCubit>(context);
     return BlocBuilder<TestCubit, TestState>(
       builder: (context, state) => Scaffold(
-        appBar: CustomAppBar(
-          context: context,
-          title: 'اختبار',
-        ),
+        appBar: CustomAppBar(title: 'اختبار', showBackButton: false),
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -33,21 +29,36 @@ class TestScreen extends StatelessWidget {
                 if (cubit.result == true)
                   Column(
                     children: [
-                      BodyMediumText(
-                        cubit.resultMessage,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                      ).bP25,
-                      TextButton(
+                      state is ShowResultErrorState
+                          ? const BodyMediumText(
+                              'عفوا لقد قمت بالاختبار من قبل..من فضلك تواصل مع الدعم للاختبار مجددا',
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                            ).bP25
+                          : Column(
+                              children: [
+                                BodyMediumText(
+                                  'نتيجتك هي ${cubit.percentage.toInt()} %',
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                ).bP8,
+                                BodyMediumText(
+                                  cubit.resultMessage,
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                ).bP25,
+                              ],
+                            ),
+                      CustomButton(
+                        color: kActiveColor,
                         onPressed: () {
-                          Navigator.pop(context);
                           Navigator.pop(context);
                           cubit.clear();
                         },
-                        child: const Text('حسنًا'),
+                        text: 'حسنًا',
                       ),
                     ],
-                  ),
+                  ).hP16,
                 if (cubit.selectedQuestions.isNotEmpty &&
                     cubit.currentQuestionIndex < cubit.selectedQuestions.length)
                   BodyMediumText(
@@ -76,7 +87,8 @@ class TestScreen extends StatelessWidget {
                       (index) {
                         return ElevatedButton(
                           onPressed: () {
-                            cubit.checkAnswer(index);
+                            print(cubit.selectedQuestions);
+                            cubit.checkAnswer(index, context);
                           },
                           style: ElevatedButton.styleFrom(
                               surfaceTintColor: kBackgroundColor,
