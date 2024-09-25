@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kfahi/extention/extetion.dart';
 import 'package:kfahi/screens/design/design_cubit.dart';
 import 'package:kfahi/screens/design/design_state.dart';
-
 import '../../components/components.dart';
 import '../../constants/colors.dart';
 import '../../constants/custom_texts.dart';
@@ -39,7 +38,7 @@ class DesignScreen extends StatelessWidget {
               ],
             ),
             DefaultTabController(
-              length: 3,
+              length: 7,
               child: Column(
                 children: [
                   Container(
@@ -91,6 +90,19 @@ class DesignScreen extends StatelessWidget {
                             } else if (index == 2) {
                               cubit.getDoneLecs(
                                   docName: 'PhotoShop', isCourse: true);
+                            } else if (index == 3) {
+                              cubit.getDoneLecs(
+                                  docName: 'Social Media With Mobile',
+                                  isCourse: true);
+                            } else if (index == 4) {
+                              cubit.getDoneLecs(
+                                  docName: 'ADS Design', isCourse: true);
+                            } else if (index == 5) {
+                              cubit.getDoneLecs(
+                                  docName: 'Adobe Animation', isCourse: true);
+                            } else if (index == 6) {
+                              cubit.getDoneLecs(
+                                  docName: 'After Effect', isCourse: true);
                             }
                           },
                           tabs: [
@@ -103,6 +115,19 @@ class DesignScreen extends StatelessWidget {
                               color: kBackgroundColor,
                             ).p4,
                             BodySmallText(S.of(context).photo_shop,
+                                    color: kBackgroundColor)
+                                .p4,
+                            const BodySmallText(
+                                    'تصميمات السوشيال ميديا بالموبايل',
+                                    color: kBackgroundColor)
+                                .p4,
+                            const BodySmallText('تصميم الإعلانات',
+                                    color: kBackgroundColor)
+                                .p4,
+                            const BodySmallText('ادوبي انميشن',
+                                    color: kBackgroundColor)
+                                .p4,
+                            const BodySmallText('افتر افكت',
                                     color: kBackgroundColor)
                                 .p4,
                           ],
@@ -143,6 +168,30 @@ class DesignScreen extends StatelessWidget {
                                 courseVids: PhotoShopVids,
                                 cubit: cubit,
                                 courseName: 'PhotoShop',
+                              ),
+                              LecNumbers(
+                                testQuestions: [],
+                                courseVids: SocialMediaWithMobileVids,
+                                cubit: cubit,
+                                courseName: 'Social Media With Mobile',
+                              ),
+                              LecNumbers(
+                                testQuestions: [],
+                                courseVids: AdsDesign,
+                                cubit: cubit,
+                                courseName: 'ADS Design',
+                              ),
+                              LecNumbers(
+                                testQuestions: [],
+                                courseVids: AdobeAnimateVids,
+                                cubit: cubit,
+                                courseName: 'Adobe Animation',
+                              ),
+                              LecNumbers(
+                                testQuestions: [],
+                                courseVids: AfterEffect,
+                                cubit: cubit,
+                                courseName: 'After Effect',
                               ),
                             ],
                           ).tP25.hP16,

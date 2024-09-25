@@ -111,7 +111,10 @@ class VideoCubit extends Cubit<VideoState> {
             course != 'English L8' &&
             course != 'English L9' &&
             course != 'English L10' &&
-            course != '') {
+            course != 'German L1' &&
+            course != 'German L2' &&
+            course != 'German L3' &&
+            course != 'German L4') {
           showDialog(
             context: context,
             builder: (context) => AppPopupDialog(body: [
